@@ -1,6 +1,7 @@
 package com.school.management.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,10 +30,20 @@ public class AnswerController {
     public Answer createAnswer(@RequestBody Answer answer) {
         return answerService.createAnswer(answer);
     }
-
-    @GetMapping("answer/{id}")
-    public Answer getAnswerById(@PathVariable Long id) {
-        return answerService.getAnswerById(id);
+    
+    @GetMapping("/answer/{studentId}")
+    public int getStudentScore(@PathVariable Long studentId) {
+        return answerService.calculateScore(studentId);
+    }
+    
+    @GetMapping("/answer")
+    public List<Answer> getAllAnswers() {
+        return answerService.getAllAnswers();
+    }
+    
+    @GetMapping("/answer/student/score")
+    public Map<Long, Integer> getAllStudentScores() {
+        return answerService.getAllStudentScores();
     }
 
     @PutMapping("answer/{id}")
@@ -45,9 +56,5 @@ public class AnswerController {
     public void deleteAnswer(@PathVariable Long id) {
         answerService.deleteAnswer(id);
     }
-
-    @GetMapping("/student/{studentId}")
-    public List<Answer> getAnswersByStudentId(@PathVariable Long studentId) {
-        return answerService.findAllByStudentId(studentId);
-    }
+    
 }

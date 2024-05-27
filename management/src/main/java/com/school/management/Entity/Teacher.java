@@ -1,7 +1,6 @@
 package com.school.management.Entity;
 
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;

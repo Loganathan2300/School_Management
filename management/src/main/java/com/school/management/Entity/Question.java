@@ -22,12 +22,12 @@ public class Question {
 	
 	@Column
 	private String subject;
-
+	
 	@Column
 	private String content;
 	
 	@Column
-    private Integer points;
+    private Integer points;  //question marks per id 
     
 	@ManyToOne
     @JoinColumn(name = "teacher_id")
@@ -46,7 +46,6 @@ public class Question {
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
