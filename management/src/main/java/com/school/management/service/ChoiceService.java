@@ -5,9 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.school.management.dto.ChoiceDTO;
+import com.school.management.DTO.ChoiceDTO;
 import com.school.management.entity.Choice;
 import com.school.management.entity.Question;
 import com.school.management.repository.ChoiceRepository;
@@ -67,6 +70,11 @@ public class ChoiceService {
 	public void deleteChoiceId(Long id) {
 		choiceRepository.deleteById(id);
 	}
-	
+
+	public List<Choice> getChoicePagination(int page, int size) {
+	    Pageable pageable=PageRequest.of(page, size);
+	    Page<Choice> pageChoice=choiceRepository.findAll(pageable);
+		return pageChoice.getContent();
+	}
 
 }

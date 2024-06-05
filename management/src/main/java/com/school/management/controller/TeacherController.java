@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.management.DTO.PaginationDto;
 import com.school.management.entity.School;
 import com.school.management.entity.Teacher;
 import com.school.management.service.TeacherService;
@@ -42,6 +43,16 @@ public class TeacherController {
 	public Teacher retriveTeacher(@PathVariable Long id ) {
 		return this.teacherService.retriveTeacher(id);
 	}
+	
+	@GetMapping("/teacher/pagination")
+    public List<Teacher> getPaginatedTeacher( PaginationDto paginationDto) {
+        return teacherService.getPaginatedTeacher(paginationDto.getPage(),paginationDto.getSize());
+    }
+	
+	@GetMapping("/teacher/search")
+    public List<Teacher> getSearchTeacher(String name,String subject) {
+        return teacherService.getSearchTeacher(name,subject);
+    }
 	
 //	@DeleteMapping("/teacher/{id}")
 //	public Map<String, String> removeId(@PathVariable Long id){

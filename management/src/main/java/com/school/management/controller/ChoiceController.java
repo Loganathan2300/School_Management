@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.dto.ChoiceDTO;
+import com.school.management.DTO.ChoiceDTO;
+import com.school.management.DTO.PaginationDto;
 import com.school.management.entity.Choice;
 import com.school.management.entity.Question;
 import com.school.management.service.ChoiceService;
@@ -41,6 +42,11 @@ public class ChoiceController {
 	@GetMapping("/choice/{id}")
 	public Choice retrieveStudentId(@PathVariable Long id) {
 		return this.choiceService.retrieveChoiceId(id);
+	}
+	
+	@GetMapping("/choice/pagination")
+	public List<Choice>getChoicePagination(PaginationDto paginationDto){
+		return choiceService.getChoicePagination(paginationDto.getPage(),paginationDto.getSize());
 	}
 	
 //	@DeleteMapping("/choice/{id}")

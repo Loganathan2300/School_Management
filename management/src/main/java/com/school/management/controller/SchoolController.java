@@ -14,13 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.management.DTO.PaginationDto;
+import com.school.management.DTO.SchoolDto;
 import com.school.management.entity.School;
 import com.school.management.service.SchoolService;
 
 @RestController
 @RequestMapping("/api/v1")
 public class SchoolController {
-
+	
 	@Autowired
 	SchoolService schoolService;
 	
@@ -28,7 +30,7 @@ public class SchoolController {
 	public School createSchool(@RequestBody School school) {
 		return this.schoolService.createSchool(school);
 	}	
-
+	
 	@GetMapping("/school")
 	public List<School> retrieveSchools(){
 		return this.schoolService.retrieveSchool();
@@ -37,6 +39,21 @@ public class SchoolController {
 	@GetMapping("/school/{id}")
 	public School retrieveSchoolId(@PathVariable("id") Long id) {
 		return this.schoolService.retrieveSchoolId(id);
+	}
+	
+	@GetMapping("/school/pagination")
+	public List<SchoolDto> getschoolPagination(PaginationDto paginationDto) {
+		return schoolService.getschoolPagination(paginationDto.getPage(),paginationDto.getSize());
+	}
+	
+//	@GetMapping("/school/search")
+//	public List<SchoolDto> getschoolSearch( String name, String address) {
+//		return schoolService.getschoolSearch(name,address);
+//	}
+	
+	@GetMapping("/school/search")
+	public List<SchoolDto> getschoolSearch( String name,String address) {
+		return schoolService.getschoolSearch(name,address);
 	}
 	
 	@PutMapping("/school/{id}")

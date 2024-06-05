@@ -1,12 +1,17 @@
 package com.school.management.service;
-//
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.school.management.DTO.StudentDTO;
 import com.school.management.entity.School;
 import com.school.management.entity.Student;
 import com.school.management.repository.SchoolRepository;
@@ -68,6 +73,27 @@ public class StudentService {
 
 	public void deleteSchool(Long id) {
 		studentRepository.deleteById(id);	
+	}
+
+	public List<Student> getStudentPagination(int page, int size) {
+		
+		Pageable pageable=PageRequest.of(page, size);
+		Page<Student> pageStudent=studentRepository.findAll(pageable);
+		
+		return pageStudent.getContent();
+	}
+
+	public List<StudentDTO> getStudentSearch(Long id, String name, String email) {
+		List<Student> studentData = studentRepository.searchSchooldetails(id,name,email);
+		List<StudentDTO> StudentDTOs = new ArrayList<>();
+		 for(Student student :studentData) {
+			 StudentDTO studentDTO = new StudentDTO();
+			 studentDTO.setId(student.getId());
+			 studentDTO.setName(student.getName());
+			 studentDTO.setEmail(student.getEmail());
+			 StudentDTOs.add(studentDTO);
+	        }
+			return StudentDTOs;
 	}
 	
 }

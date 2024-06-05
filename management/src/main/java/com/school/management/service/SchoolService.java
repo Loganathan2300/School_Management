@@ -1,13 +1,18 @@
 package com.school.management.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.school.management.DTO.SchoolDto;
 import com.school.management.entity.School;
 import com.school.management.repository.SchoolRepository;
 
@@ -57,5 +62,32 @@ public class SchoolService {
 	 public void deleteSchool(Long id) {
 		 schoolRepository.deleteById(id);
 	    }
+	 
+	 public List<SchoolDto> getschoolPagination(int page, int size) {
+			Pageable pageable = PageRequest.of(page, size);
+	        Page<School> pagedSchool = schoolRepository.findAll(pageable);
+	        List<School> SchoolList = pagedSchool.getContent();
+	        List<SchoolDto> SchoolDTOs = new ArrayList<>();
+	        
+	        for(School school :SchoolList) {
+	        	SchoolDto schoolDTO = new SchoolDto();
+	        	schoolDTO.setName(school.getName());
+	        	schoolDTO.setAddress(school.getAddress());
+	        	SchoolDTOs.add(schoolDTO);
+	        }
+			return SchoolDTOs;
+		}
+
+	public List<SchoolDto> getschoolSearch(String name,String address) {
+		 List<School> schoolData = schoolRepository.searchSchooldetails(name,address);
+		 List<SchoolDto> SchoolDTOs = new ArrayList<>();
+		 for(School school :schoolData) {
+	        	SchoolDto schoolDTO = new SchoolDto();
+	        	schoolDTO.setName(school.getName());
+	        	schoolDTO.setAddress(school.getAddress());
+	        	SchoolDTOs.add(schoolDTO);
+	        }
+			return SchoolDTOs;
+	}
 	
 }

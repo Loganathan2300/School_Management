@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.management.DTO.PaginationDto;
+import com.school.management.DTO.StudentDTO;
 import com.school.management.entity.School;
 import com.school.management.entity.Student;
 import com.school.management.service.StudentService;
@@ -41,6 +43,16 @@ public class StudentController {
 	@GetMapping("/student/{id}")
 	public Student retrieveStudentId(@PathVariable Long id) {
 		return this.studentService.retrieveStudentId(id);
+	}
+	
+	@GetMapping("/student/pagination")
+	public List<Student>getStudentPagination(PaginationDto paginationDto){
+		return this.studentService.getStudentPagination(paginationDto.getPage(),paginationDto.getSize());
+	}
+	
+	@GetMapping("/student/search")
+	public List<StudentDTO>getStudentSearch(Long id,String name,String email){
+		return this.studentService.getStudentSearch(id,name,email);
 	}
 	
 //	@DeleteMapping("/student/{id}")

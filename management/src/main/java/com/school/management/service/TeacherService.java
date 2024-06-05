@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.school.management.entity.School;
@@ -56,6 +59,18 @@ public class TeacherService {
 
 	public void deleteTeacherId(Long id) {
 		teacherRepository.deleteById(id);
+	}
+
+	public List<Teacher> getPaginatedTeacher(int page, int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> pagedTeachers = teacherRepository.findAll(pageable);
+        return pagedTeachers.getContent();
+	}
+
+	public List<Teacher> getSearchTeacher(String name, String subject) {
+		
+		return teacherRepository.searchTeacher(name,subject);
 	}
 	
 }

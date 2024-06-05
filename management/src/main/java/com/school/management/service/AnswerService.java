@@ -10,13 +10,16 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.school.management.dto.AnswerDTO;
-import com.school.management.dto.ChoiceDTO;
-import com.school.management.dto.QuestionDTO;
-import com.school.management.dto.StudentDTO;
-import com.school.management.dto.StudentScore;
+import com.school.management.DTO.AnswerDTO;
+import com.school.management.DTO.ChoiceDTO;
+import com.school.management.DTO.QuestionDTO;
+import com.school.management.DTO.StudentDTO;
+import com.school.management.DTO.StudentScore;
 import com.school.management.entity.Answer;
 import com.school.management.entity.Question;
 import com.school.management.repository.AnswerRepository;
@@ -42,12 +45,12 @@ public class AnswerService {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnswerService.class);
 		  
-		  public List<AnswerDTO> getAllAnswers() {
+	    public List<AnswerDTO> getAllAnswers() {
 		        List<Answer> answers = answerRepository.findAll();
 		        return answers.stream().map(this::convertToDTO).collect(Collectors.toList());
 		    }
 		  
-		    private AnswerDTO convertToDTO(Answer answer) {
+	    private AnswerDTO convertToDTO(Answer answer) {
 		        AnswerDTO answerDTO = new AnswerDTO();
 		        answerDTO.setId(answer.getId());
 		        answerDTO.setAnswers(answer.getAnswers());
@@ -194,5 +197,76 @@ public class AnswerService {
 	        }
 	        return studentScores;
 	    }
-    
+	    
+	    
+	    
+	    public List<AnswerDTO> getAnswers(int page, int size) {
+	        Pageable pageable = PageRequest.of(page, size);
+	        Page<Answer> pagedAnswers = answerRepository.findAll(pageable);
+	        List<Answer> answerList = pagedAnswers.getContent();
+	        List<AnswerDTO> answerDTOs = new ArrayList<>();
+
+	        for (Answer answer : answerList) {
+	            AnswerDTO answerDTO = new AnswerDTO();
+	            answerDTO.setId(answer.getId());
+	            answerDTO.setAnswers(answer.getAnswers());
+
+	            StudentDTO studentDTO = new StudentDTO();
+	            studentDTO.setId(answer.getStudent().getId());
+	            studentDTO.setName(answer.getStudent().getName());
+	            studentDTO.setEmail(answer.getStudent().getEmail());
+	            answerDTO.setStudent(studentDTO);
+
+	            QuestionDTO questionDTO = new QuestionDTO();
+	            questionDTO.setId(answer.getQuestion().getId());
+	            questionDTO.setSubject(answer.getQuestion().getSubject());
+	            questionDTO.setContent(answer.getQuestion().getContent());
+	            questionDTO.setPoints(answer.getQuestion().getPoints());
+	            answerDTO.setQuestion(questionDTO);
+
+	            ChoiceDTO choiceDTO = new ChoiceDTO();
+	            choiceDTO.setId(answer.getChoice().getId());
+	            choiceDTO.setContent(answer.getChoice().getContent());
+	            answerDTO.setChoice(choiceDTO);
+
+	            answerDTOs.add(answerDTO);
+	        }
+	        return answerDTOs;
+	    }
+
+//		public List<AnswerDTO> searchAnswer(String keyword, int page, int size) {
+//			Pageable pageable = PageRequest.of(page, size);
+//	        Page<Answer> pagedTeachers = answerRepository.searchTeachers(keyword, pageable);
+//	        List<Answer> answerList = pagedTeachers.getContent();
+//	        List<AnswerDTO> answerDTOs = new ArrayList<>();
+//
+//	        for (Answer answer : answerList) {
+//	            AnswerDTO answerDTO = new AnswerDTO();
+//	            answerDTO.setId(answer.getId());
+//	            answerDTO.setAnswers(answer.getAnswers());
+//	            
+//	            StudentDTO studentDTO = new StudentDTO();
+//	            studentDTO.setId(answer.getStudent().getId());
+//	            studentDTO.setName(answer.getStudent().getName());
+//	            studentDTO.setEmail(answer.getStudent().getEmail());
+//	            answerDTO.setStudent(studentDTO);
+//	            
+//	            QuestionDTO questionDTO = new QuestionDTO();
+//	            questionDTO.setId(answer.getQuestion().getId());
+//	            questionDTO.setSubject(answer.getQuestion().getSubject());
+//	            questionDTO.setContent(answer.getQuestion().getContent());
+//	            questionDTO.setPoints(answer.getQuestion().getPoints());
+//	            answerDTO.setQuestion(questionDTO);
+//
+//	            ChoiceDTO choiceDTO = new ChoiceDTO();
+//	            choiceDTO.setId(answer.getChoice().getId());
+//	            choiceDTO.setContent(answer.getChoice().getContent());
+//	            answerDTO.setChoice(choiceDTO);
+//
+//	            answerDTOs.add(answerDTO);
+//	        }
+//	        return answerDTOs;
+//		}
+//	    
+	    
 }

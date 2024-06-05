@@ -1,13 +1,18 @@
 package com.school.management.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.school.management.DTO.QuestionDTO;
 import com.school.management.entity.Question;
 import com.school.management.entity.Teacher;
 import com.school.management.repository.QuestionRepository;
@@ -61,19 +66,41 @@ public class QuestionService {
 		return this.questionRepository.save(finalQuestion);
 	    }
 
-//	public String removeId(Long id) {
-//		Optional<Question> removeDetails=questionRepository.findById(id);
-//		if(removeDetails.isPresent()) {
-//			questionRepository.deleteById(id);
-//			return "Sucessfully Deleted....";
-//		}else {
-//			return "Data Not Found....";
-//		}
-//	}
-
 	public void deleteTeacherId(Long id) {
 		questionRepository.deleteById(id);
 	}
+
+	public List<QuestionDTO> getPaginateQuestion(int pageNo, int size) {
+		Pageable pageable = PageRequest.of(pageNo, size);
+		Page<Question> Questionpage=questionRepository.findAll(pageable);
+		List<Question> questionList=Questionpage.getContent();
+		List<QuestionDTO> QuestionDTOs = new ArrayList<>();
+		
+		for(Question question: questionList) {
+			QuestionDTO questionDTO=new QuestionDTO();
+			questionDTO.setId(question.getId());
+			questionDTO.setSubject(question.getSubject());
+			questionDTO.setContent(question.getContent());
+			questionDTO.setPoints(question.getPoints());
+			QuestionDTOs.add(questionDTO);
+		}
+		return QuestionDTOs;
+	}
+
+//	public List<QuestionDTO> getSearchQuestion(Long id, String name, String content, int points) {
+//		List<Question> questiondata=questionRepository.searchQuestion(id,name,content,points);
+//        List<QuestionDTO> QuestionDTOs = new ArrayList<>();
+//		
+//		for(Question question: questiondata) {
+//			QuestionDTO questionDTO=new QuestionDTO();
+//			questionDTO.setId(question.getId());
+//			questionDTO.setSubject(question.getSubject());
+//			questionDTO.setContent(question.getContent());
+//			questionDTO.setPoints(question.getPoints());
+//			QuestionDTOs.add(questionDTO);
+//		}
+//		return QuestionDTOs;
+//	}
 	
 	
 	

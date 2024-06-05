@@ -1,4 +1,4 @@
-package com.school.management.dto;
+package com.school.management.DTO;
 
 public class QuestionDTO {
 
@@ -6,13 +6,6 @@ public class QuestionDTO {
     private String subject;
     private String content;
     private int points;
-    
-//    public QuestionDTO(Long id,String subject,String content,int points) {
-//    	this.id=id;
-//    	this.subject=subject;
-//    	this.content=content;
-//    	this.points=points;
-//    }
 
 	public Long getId() {
 		return id;

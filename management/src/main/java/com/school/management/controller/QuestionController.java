@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.management.DTO.QuestionDTO;
 import com.school.management.entity.Question;
 import com.school.management.entity.Teacher;
 import com.school.management.service.QuestionService;
@@ -51,11 +53,14 @@ public class QuestionController {
         return this.questionService.update(id, question);
     }
 	
-//	@DeleteMapping("/question/{id}")
-//	public Map<String, String> removeId(@PathVariable Long id){
-//		Map<String, String> response = new HashMap<>();
-//		response.put("Message", questionService.removeId(id));
-//		return response;
+	@GetMapping("/question/pagination")
+	public List<QuestionDTO>getPaginateQuestion(@RequestParam int pageNo,@RequestParam int size){
+		return questionService.getPaginateQuestion(pageNo,size);
+	}
+	
+//	@GetMapping("/question/search")
+//	public List<QuestionDTO>getSearchQuestion(Long id,String name,String content,int points){
+//		return questionService.getSearchQuestion(id,name,content,points);
 //	}
 	
 	@DeleteMapping("/question/{id}")
