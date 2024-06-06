@@ -12,11 +12,10 @@ import com.school.management.entity.Question;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-//	@Query("SELECT q FROM Question q WHERE "+
-//	"(q.id IS NULL OR q.id LIKE %:id%) OR " +
-//	"(q.name IS NULL OR q.name LIKE %:name%) OR " +
-//	"(q.content IS NULL OR q.content LIKE %:content%) OR " +
-//	"(q.points IS NULL OR q.points LIKE %:points%)")
-//	List<Question> searchQuestion(@Param("id") Long id,@Param("name") String name,@Param("content") String content,@Param("points") int points);
-
+	@Query("SELECT q FROM Question q WHERE "+
+	"(q.id IS NULL OR q.id = :id) OR " +
+	"(q.subject IS NULL OR q.subject LIKE %:subject%) OR " +
+	"(q.content IS NULL OR q.content LIKE %:content%) OR " +
+	"(q.points IS NULL OR q.points = :points)")
+	List<Question> searchQuestion(@Param("id") Long id,@Param("subject") String subject,@Param("content") String content,@Param("points") Integer points);
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.school.management.DTO.AnswerDTO;
 import com.school.management.DTO.PaginationDto;
-import com.school.management.DTO.SearchDto;
 import com.school.management.DTO.StudentScore;
 import com.school.management.entity.Answer;
 import com.school.management.service.AnswerService;
@@ -51,10 +50,10 @@ public class AnswerController {
         return answerService.getAnswers(paginationDto.getPage(),paginationDto.getSize());
     }
     
-//    @GetMapping("/teacher/search")
-//    public List<AnswerDTO> searchTeachers(SearchDto searchDto) {
-//        return answerService.searchAnswer(searchDto.getKeyword(), searchDto.getPage(), searchDto.getSize());
-//    }
+    @GetMapping("/answer/search")
+    public List<AnswerDTO> searchAnswers(Boolean answers,Long student,Long question,Long choice) {
+        return answerService.searchAnswers(answers, student, question, choice);
+    }
     
     @PutMapping("answer/{id}")
     public Answer updateAnswer(@PathVariable Long id, @RequestBody Answer answer) {

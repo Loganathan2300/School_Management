@@ -76,5 +76,10 @@ public class ChoiceService {
 	    Page<Choice> pageChoice=choiceRepository.findAll(pageable);
 		return pageChoice.getContent();
 	}
+	
+	public List<Choice>searchChoice(Long id,String content){
+		List<Choice> choiceSearch=choiceRepository.searchChoiceDetails(id,content);
+		return choiceSearch;
+	}
 
 }

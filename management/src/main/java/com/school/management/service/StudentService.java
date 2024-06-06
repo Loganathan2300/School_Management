@@ -1,12 +1,13 @@
 package com.school.management.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -83,17 +84,31 @@ public class StudentService {
 		return pageStudent.getContent();
 	}
 
-	public List<StudentDTO> getStudentSearch(Long id, String name, String email) {
-		List<Student> studentData = studentRepository.searchSchooldetails(id,name,email);
-		List<StudentDTO> StudentDTOs = new ArrayList<>();
-		 for(Student student :studentData) {
-			 StudentDTO studentDTO = new StudentDTO();
-			 studentDTO.setId(student.getId());
-			 studentDTO.setName(student.getName());
-			 studentDTO.setEmail(student.getEmail());
-			 StudentDTOs.add(studentDTO);
-	        }
-			return StudentDTOs;
-	}
-	
+//	public List<StudentDTO> getStudentSearch(Long id, String name, String email) {
+//		List<Student> studentData = studentRepository.searchSchooldetails(id,name,email);
+//		List<StudentDTO> StudentDTOs = new ArrayList<>();
+//		 for(Student student :studentData) {
+//			 StudentDTO studentDTO = new StudentDTO();
+//			 studentDTO.setId(student.getId());
+//			 studentDTO.setName(student.getName());
+//			 studentDTO.setEmail(student.getEmail());
+//			 StudentDTOs.add(studentDTO);
+//	        }
+//			return StudentDTOs;
+//	}
+
+	public List<StudentDTO> searchStudents(String name, String email, int page, int size, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Student> studentsPage = studentRepository.searchStudents( name, email, pageable);
+
+        return studentsPage.stream()
+                           .map(student -> {
+                               StudentDTO dto = new StudentDTO();
+                               dto.setId(student.getId());
+                               dto.setName(student.getName());
+                               dto.setEmail(student.getEmail());
+                               return dto;
+                           }).collect(Collectors.toList());
+    }
 }

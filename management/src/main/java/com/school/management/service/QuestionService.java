@@ -87,20 +87,20 @@ public class QuestionService {
 		return QuestionDTOs;
 	}
 
-//	public List<QuestionDTO> getSearchQuestion(Long id, String name, String content, int points) {
-//		List<Question> questiondata=questionRepository.searchQuestion(id,name,content,points);
-//        List<QuestionDTO> QuestionDTOs = new ArrayList<>();
-//		
-//		for(Question question: questiondata) {
-//			QuestionDTO questionDTO=new QuestionDTO();
-//			questionDTO.setId(question.getId());
-//			questionDTO.setSubject(question.getSubject());
-//			questionDTO.setContent(question.getContent());
-//			questionDTO.setPoints(question.getPoints());
-//			QuestionDTOs.add(questionDTO);
-//		}
-//		return QuestionDTOs;
-//	}
+	public List<QuestionDTO> getSearchQuestion(Long id, String subject, String content,Integer points) {
+		List<Question> questiondata=questionRepository.searchQuestion(id,subject,content,points);
+        List<QuestionDTO> QuestionDTOs = new ArrayList<>();
+		
+		for(Question question: questiondata) {
+			QuestionDTO questionDTO=new QuestionDTO();
+			questionDTO.setId(question.getId());
+			questionDTO.setSubject(question.getSubject());
+			questionDTO.setContent(question.getContent());
+			questionDTO.setPoints(question.getPoints());
+			QuestionDTOs.add(questionDTO);
+		}
+		return QuestionDTOs;
+	}
 	
 	
 	

@@ -49,6 +49,11 @@ public class ChoiceController {
 		return choiceService.getChoicePagination(paginationDto.getPage(),paginationDto.getSize());
 	}
 	
+	@GetMapping("/choice/search")
+	public List<Choice>SearchChoice(ChoiceDTO choiceDTO){
+		return choiceService.searchChoice(choiceDTO.getId(),choiceDTO.getContent());
+	}
+	
 //	@DeleteMapping("/choice/{id}")
 //	public Map<String, String> removeId(@PathVariable Long id){
 //		Map<String, String> response = new HashMap<>();

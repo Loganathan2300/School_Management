@@ -51,9 +51,9 @@ public class StudentController {
 	}
 	
 	@GetMapping("/student/search")
-	public List<StudentDTO>getStudentSearch(Long id,String name,String email){
-		return this.studentService.getStudentSearch(id,name,email);
-	}
+    public List<StudentDTO> searchStudents( String name, String email,int page,int size,String sortField,String sortDirection) {
+        return studentService.searchStudents(name, email, page, size, sortField, sortDirection);
+    }
 	
 //	@DeleteMapping("/student/{id}")
 //	public Map<String, String> removeId(@PathVariable Long id){

@@ -58,10 +58,10 @@ public class QuestionController {
 		return questionService.getPaginateQuestion(pageNo,size);
 	}
 	
-//	@GetMapping("/question/search")
-//	public List<QuestionDTO>getSearchQuestion(Long id,String name,String content,int points){
-//		return questionService.getSearchQuestion(id,name,content,points);
-//	}
+	@GetMapping("/question/search")
+	public List<QuestionDTO>getSearchQuestion(Long id,String subject,String content,Integer points){
+		return questionService.getSearchQuestion(id,subject,content,points);
+	}
 	
 	@DeleteMapping("/question/{id}")
 	public void deleteTeacherId(@PathVariable Long id) {
