@@ -48,11 +48,12 @@ public class TeacherController {
     public List<Teacher> getPaginatedTeacher( PaginationDto paginationDto) {
         return teacherService.getPaginatedTeacher(paginationDto.getPage(),paginationDto.getSize());
     }
-	
+		
 	@GetMapping("/teacher/search")
-    public List<Teacher> getSearchTeacher(String name,String subject) {
-        return teacherService.getSearchTeacher(name,subject);
+    public List<Teacher> getSearchTeacher(String name,String subject,int page,int size,String sortField,String sortDirection) {
+        return teacherService.getSearchTeacher(name,subject,page,size,sortField,sortDirection);
     }
+	
 	
 //	@DeleteMapping("/teacher/{id}")
 //	public Map<String, String> removeId(@PathVariable Long id){

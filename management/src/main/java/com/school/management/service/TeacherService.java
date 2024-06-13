@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.school.management.entity.School;
@@ -68,9 +69,11 @@ public class TeacherService {
         return pagedTeachers.getContent();
 	}
 
-	public List<Teacher> getSearchTeacher(String name, String subject) {
-		
-		return teacherRepository.searchTeacher(name,subject);
-	}
 	
+public List<Teacher> getSearchTeacher(String name, String subject, int page, int size, String sortField, String sortDirection) {
+	 Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+     Pageable pageable = PageRequest.of(page, size, sort);
+//     Page<Student> studentsPage = teacherRepository.searchTeacher( name, subject, pageable);
+		return teacherRepository.searchTeacher( name, subject, pageable);
+	}
 }
