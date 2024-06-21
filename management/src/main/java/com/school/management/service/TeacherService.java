@@ -48,16 +48,6 @@ public class TeacherService {
         }
     }
 
-//	public String removeData(Long id) {
-//		Optional<Teacher> optionalSchool = teacherRepository.findById(id);
-//		if(optionalSchool.isPresent()) {
-//			teacherRepository.deleteById(id);
-//			return "School Deleted..";
-//		}else {
-//			return "school_details not found...";
-//		}
-//	}
-
 	public void deleteTeacherId(Long id) {
 		teacherRepository.deleteById(id);
 	}

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.DTO.AnswerDTO;
-import com.school.management.DTO.PaginationDto;
-import com.school.management.DTO.StudentScore;
+import com.school.management.dto.AnswerDTO;
+import com.school.management.dto.PaginationDto;
+import com.school.management.dto.StudentScore;
 import com.school.management.entity.Answer;
 import com.school.management.service.AnswerService;
 

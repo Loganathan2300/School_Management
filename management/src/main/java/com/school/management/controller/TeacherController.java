@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.DTO.PaginationDto;
+import com.school.management.dto.PaginationDto;
 import com.school.management.entity.School;
 import com.school.management.entity.Teacher;
 import com.school.management.service.TeacherService;
@@ -53,14 +53,6 @@ public class TeacherController {
     public List<Teacher> getSearchTeacher(String name,String subject,int page,int size,String sortField,String sortDirection) {
         return teacherService.getSearchTeacher(name,subject,page,size,sortField,sortDirection);
     }
-	
-	
-//	@DeleteMapping("/teacher/{id}")
-//	public Map<String, String> removeId(@PathVariable Long id){
-//		Map<String, String> response = new HashMap<>();
-//		response.put("Message", teacherService.removeData(id));
-//		return response;
-//	}
 	
 	@DeleteMapping("teacher/{id}")
     public void deleteTeacher(@PathVariable Long id) {

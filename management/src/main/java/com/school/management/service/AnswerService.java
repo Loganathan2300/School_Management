@@ -15,11 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.school.management.DTO.AnswerDTO;
-import com.school.management.DTO.ChoiceDTO;
-import com.school.management.DTO.QuestionDTO;
-import com.school.management.DTO.StudentDTO;
-import com.school.management.DTO.StudentScore;
+import com.school.management.dto.AnswerDTO;
+import com.school.management.dto.ChoiceDTO;
+import com.school.management.dto.QuestionDTO;
+import com.school.management.dto.StudentDTO;
+import com.school.management.dto.StudentScore;
 import com.school.management.entity.Answer;
 import com.school.management.entity.Question;
 import com.school.management.repository.AnswerRepository;
@@ -162,21 +162,6 @@ public class AnswerService {
 	        }
 	        return score;
 	    }
-	    
-//	    public Map<Long, Integer> getAllStudentScores() {
-//	        Map<Long, Integer> studentScores = new HashMap<>();
-//	        List<Answer> allAnswers = answerRepository.findAll();
-//	        
-//	        for (Answer answer : allAnswers) {
-//	            Long studentId = answer.getStudent().getId();
-//	            Question question = answer.getQuestion();
-//	            
-//	            if (answer.getChoice().isCorrect()) {
-//	                studentScores.put(studentId, studentScores.getOrDefault(studentId, 0) + question.getPoints());
-//	            }
-//	        }
-//	        return studentScores;
-//	    }
 	    
 	    public List<StudentScore> getAllStudentScores() {
 	        Map<Long, Integer> studentScoresMap = new HashMap<>();

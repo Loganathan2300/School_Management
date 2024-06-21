@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.school.management.DTO.ChoiceDTO;
+import com.school.management.dto.ChoiceDTO;
 import com.school.management.entity.Choice;
 import com.school.management.entity.Question;
 import com.school.management.repository.ChoiceRepository;
@@ -55,17 +55,7 @@ public class ChoiceService {
 
 	public Choice retrieveChoiceId(Long id) {
 		return choiceRepository.findById(id).orElse(null);
-	}
-
-//	public String removeId(Long id) {
-//		Optional<Choice> optionalChoice = choiceRepository.findById(id);
-//		if(optionalChoice.isPresent()) {
-//			choiceRepository.deleteById(id);
-//			return "Sucessfully Deleted....";
-//		}else {
-//			return "Data Not Found....";
-//		}
-//	}	
+	}	
 	
 	public void deleteChoiceId(Long id) {
 		choiceRepository.deleteById(id);

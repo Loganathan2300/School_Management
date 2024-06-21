@@ -1,4 +1,4 @@
-package com.school.management.DTO;
+package com.school.management.dto;
 
 public class SearchDto {
 

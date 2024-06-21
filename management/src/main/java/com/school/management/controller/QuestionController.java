@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.DTO.QuestionDTO;
+import com.school.management.dto.QuestionDTO;
 import com.school.management.entity.Question;
 import com.school.management.entity.Teacher;
 import com.school.management.service.QuestionService;
@@ -57,11 +57,6 @@ public class QuestionController {
 	public List<QuestionDTO>getPaginateQuestion(@RequestParam int pageNo,@RequestParam int size){
 		return questionService.getPaginateQuestion(pageNo,size);
 	}
-	
-//	@GetMapping("/question/search")
-//	public List<QuestionDTO>getSearchQuestion(Long id,String subject,String content,Integer points){
-//		return questionService.getSearchQuestion(id,subject,content,points);
-//	}
 	
 	@GetMapping("/question/search")
 	public List<QuestionDTO>getSearchQuestion(String subject,String content,Integer points,int page,int size,String sortField,String sortDirection ){

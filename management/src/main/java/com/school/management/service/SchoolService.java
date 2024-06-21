@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.school.management.DTO.SchoolDto;
+import com.school.management.dto.SchoolDto;
 import com.school.management.entity.School;
 import com.school.management.repository.SchoolRepository;
 
@@ -48,16 +48,6 @@ public class SchoolService {
 		 }
 		return this.schoolRepository.save(finalCollege);
 	    }
-	
-//	public String removeSchool(Long id) {
-//		Optional<School> optionalSchool = schoolRepository.findById(id);
-//		if(optionalSchool.isPresent()) {
-//			schoolRepository.deleteById(id);
-//			return "School Deleted..";
-//		}else {
-//			return "school_details not found...";
-//		}
-//	}
 	
 	 public void deleteSchool(Long id) {
 		 schoolRepository.deleteById(id);

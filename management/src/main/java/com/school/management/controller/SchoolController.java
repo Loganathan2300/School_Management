@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.DTO.PaginationDto;
-import com.school.management.DTO.SchoolDto;
+import com.school.management.dto.PaginationDto;
+import com.school.management.dto.SchoolDto;
 import com.school.management.entity.School;
 import com.school.management.service.SchoolService;
 
@@ -28,6 +28,7 @@ public class SchoolController {
 
 	@Autowired
 	SchoolService schoolService;
+	
 //	private final SchoolService schoolService;
 //	
 //	public SchoolController(SchoolService schoolService) {
@@ -54,11 +55,6 @@ public class SchoolController {
 		return schoolService.getschoolPagination(paginationDto.getPage(),paginationDto.getSize());
 	}
 	
-//	@GetMapping("/school/search")
-//	public List<SchoolDto> getschoolSearch( String name, String address) {
-//		return schoolService.getschoolSearch(name,address);
-//	}
-	
 	@GetMapping("/school/search")
 	public List<SchoolDto> getschoolSearch( String name,String address) {
 		return schoolService.getschoolSearch(name,address);
@@ -68,13 +64,6 @@ public class SchoolController {
     public School update(@PathVariable("id") Long id, @RequestBody School school) throws AccountNotFoundException {
         return this.schoolService.update(id, school);
     }
-	
-//	@DeleteMapping("/school/{id}")
-//    public Map<String, String> removeById(@PathVariable("id") Long id) {
-//        Map<String, String> response=new HashMap<>();
-//        response.put("message",this.schoolService.removeSchool(id));
-//        return response;
-//    }
 	
 	@DeleteMapping("school/{id}")
     public void deleteSchool(@PathVariable Long id) {

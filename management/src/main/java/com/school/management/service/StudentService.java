@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.school.management.DTO.StudentDTO;
+import com.school.management.dto.StudentDTO;
 import com.school.management.entity.School;
 import com.school.management.entity.Student;
 import com.school.management.repository.SchoolRepository;
@@ -37,16 +37,6 @@ public class StudentService {
 	public List<Student> retriveStudent() {
 		return studentRepository.findAll() ;
 	}
-	
-//	public String removeId(Long id) {
-//		Optional<Student> removeDetails=studentRepository.findById(id);
-//		if(removeDetails.isPresent()) {
-//			studentRepository.deleteById(id);
-//			return "Sucessfully Deleted....";
-//		}else {
-//			return "Data Not Found....";
-//		}
-//	}
 
 	public Student retrieveStudentId(Long id) {
 		return studentRepository.findById(id).orElse(null);
@@ -83,20 +73,6 @@ public class StudentService {
 		
 		return pageStudent.getContent();
 	}
-
-//	public List<StudentDTO> getStudentSearch(Long id, String name, String email) {
-//		List<Student> studentData = studentRepository.searchSchooldetails(id,name,email);
-//		List<StudentDTO> StudentDTOs = new ArrayList<>();
-//		 for(Student student :studentData) {
-//			 StudentDTO studentDTO = new StudentDTO();
-//			 studentDTO.setId(student.getId());
-//			 studentDTO.setName(student.getName());
-//			 studentDTO.setEmail(student.getEmail());
-//			 StudentDTOs.add(studentDTO);
-//	        }
-//			return StudentDTOs;
-//	}
-
 	
 	public List<StudentDTO> searchStudents(String name, String email, int page, int size, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();

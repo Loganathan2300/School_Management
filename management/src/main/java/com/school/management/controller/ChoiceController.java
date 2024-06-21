@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.DTO.ChoiceDTO;
-import com.school.management.DTO.PaginationDto;
+import com.school.management.dto.ChoiceDTO;
+import com.school.management.dto.PaginationDto;
 import com.school.management.entity.Choice;
 import com.school.management.entity.Question;
 import com.school.management.service.ChoiceService;
@@ -53,13 +53,6 @@ public class ChoiceController {
 	public List<Choice>SearchChoice(ChoiceDTO choiceDTO){
 		return choiceService.searchChoice(choiceDTO.getId(),choiceDTO.getContent());
 	}
-	
-//	@DeleteMapping("/choice/{id}")
-//	public Map<String, String> removeId(@PathVariable Long id){
-//		Map<String, String> response = new HashMap<>();
-//		response.put("Message", choiceService.removeId(id));
-//		return response;
-//	}
 	
 	@DeleteMapping("/choice/{id}")
 	public void deleteChoiceId(@PathVariable Long id){

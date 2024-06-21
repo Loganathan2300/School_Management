@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.school.management.DTO.QuestionDTO;
+import com.school.management.dto.QuestionDTO;
 import com.school.management.entity.Question;
 import com.school.management.entity.Teacher;
 import com.school.management.repository.QuestionRepository;
@@ -87,21 +87,6 @@ public class QuestionService {
 		}
 		return QuestionDTOs;
 	}
-
-//	public List<QuestionDTO> getSearchQuestion(Long id, String subject, String content,Integer points) {
-//		List<Question> questiondata=questionRepository.searchQuestion(id,subject,content,points);
-//        List<QuestionDTO> QuestionDTOs = new ArrayList<>();
-//		
-//		for(Question question: questiondata) {
-//			QuestionDTO questionDTO=new QuestionDTO();
-//			questionDTO.setId(question.getId());
-//			questionDTO.setSubject(question.getSubject());
-//			questionDTO.setContent(question.getContent());
-//			questionDTO.setPoints(question.getPoints());
-//			QuestionDTOs.add(questionDTO);
-//		}
-//		return QuestionDTOs;
-//	}
 	
 	public List<QuestionDTO> getSearchQuestion( String subject, String content,Integer points, int page, int size, String sortField, String sortDirection) {
 		 Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();

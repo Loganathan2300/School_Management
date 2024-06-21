@@ -3,7 +3,6 @@ package com.school.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.DTO.PaginationDto;
-import com.school.management.DTO.StudentDTO;
+import com.school.management.dto.PaginationDto;
+import com.school.management.dto.StudentDTO;
 import com.school.management.entity.School;
 import com.school.management.entity.Student;
 import com.school.management.service.StudentService;
@@ -26,7 +25,7 @@ public class StudentController {
 	StudentService studentService;
 	
 	 @PostMapping("/schools/students/{Id}")
-	 public School addStudentToSchool(@PathVariable Long Id, @Validated @RequestBody Student student) {
+	 public School addStudentToSchool(@PathVariable Long Id,@RequestBody Student student) {
 	       return this.studentService.addStudentToSchool(Id, student);
 	  }
 	
@@ -53,14 +52,7 @@ public class StudentController {
 	@GetMapping("/student/search")
     public List<StudentDTO> searchStudents( String name, String email,int page,int size,String sortField,String sortDirection) {
         return studentService.searchStudents(name, email, page, size, sortField, sortDirection);
-    }
-	
-//	@DeleteMapping("/student/{id}")
-//	public Map<String, String> removeId(@PathVariable Long id){
-//		Map<String, String> response = new HashMap<>();
-//		response.put("Message", studentService.removeId(id));
-//		return response;
-//	}	
+    }	
 	
 	@DeleteMapping("student/{id}")
     public void deleteSchool(@PathVariable Long id) {
