@@ -1,10 +1,14 @@
 package com.school.management.dto;
 
+import jakarta.validation.constraints.NotBlank;
 public class SignInRequest {
 
+	@NotBlank(message = "Email is required")
 	private String email;
+	
+	@NotBlank(message = "Password is required")
     private String password;
-    
+	
 	public String getEmail() {
 		return email;
 	}

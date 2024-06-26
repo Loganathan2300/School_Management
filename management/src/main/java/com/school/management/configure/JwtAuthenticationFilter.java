@@ -2,6 +2,7 @@ package com.school.management.configure;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,28 +19,25 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private final JWTServiceImpl jwtService;
-
-    private final UserServiceImpl  userService;
+	@Autowired
+	private JWTServiceImpl jwtService;
+	@Autowired
+    private UserServiceImpl  userService;
+	
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
 
-        if(StringUtils.hasLength(authHeader) || !StringUtils.startsWithIgnoreCase(authHeader, "Bearer ")){
+        if(!StringUtils.hasLength(authHeader) || !StringUtils.startsWithIgnoreCase(authHeader, "Bearer ")){
             filterChain.doFilter(request, response);
             return;
         }
         
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUserName(jwt);
+         String jwt = authHeader.substring(7);
+         String userEmail = jwtService.extractUserName(jwt);
 
         if(StringUtils.hasLength(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userService.loadUserByUsername(userEmail);

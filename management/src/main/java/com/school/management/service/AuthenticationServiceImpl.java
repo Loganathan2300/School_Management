@@ -2,28 +2,37 @@ package com.school.management.service;
 
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.school.management.dto.JwtAuthenticationResponse;
+import com.school.management.dto.ReferceTokenRequest;
 import com.school.management.dto.SignInRequest;
 import com.school.management.dto.SignUpRequest;
 import com.school.management.entity.Role;
 import com.school.management.entity.User;
+import com.school.management.exception.EmailNotFoundException;
+import com.school.management.exception.InvalidCredentialsException;
 import com.school.management.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@Component
 public class AuthenticationServiceImpl {
 
-	 private final UserRepository userRepository;
-	    private final PasswordEncoder passwordEncoder;
-	    private final AuthenticationManager authenticationManager;
-	    private final JWTServiceImpl jwtService;
+	    @Autowired
+	    private  UserRepository userRepository;
+	    @Autowired
+	    private PasswordEncoder passwordEncoder;
+	    @Autowired
+	    private AuthenticationManager authenticationManager;
+	    @Autowired
+	    private JWTServiceImpl jwtService;
 	    
 	    public User signUp(SignUpRequest signUpRequest) {
 	        User user =  new User();
@@ -32,20 +41,27 @@ public class AuthenticationServiceImpl {
 	        user.setName(signUpRequest.getName());
 	        user.setRole(Role.USER);
 	        return userRepository.save(user);
-	    }
+	    }	    
 	    
-	    public JwtAuthenticationResponse signIn(SignInRequest signInRequest){
-	        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
-	                signInRequest.getPassword()));
+	    public JwtAuthenticationResponse signIn(SignInRequest request) {
+	        User user = userRepository.findByEmail(request.getEmail())
+	                .orElseThrow(() -> new EmailNotFoundException("Invalid email"));
 
-	        User user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid Email id"));
+	        try {
+	            authenticationManager.authenticate(
+	                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+	            );
+	        } catch (AuthenticationException e) {
+	            throw new InvalidCredentialsException("Invalid password");
+	        }
+
 	        String jwt = jwtService.generateToken(user);
 	        String refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
 	        JwtAuthenticationResponse jwtAuthenticationResponse =new JwtAuthenticationResponse();
 	        jwtAuthenticationResponse.setToken(jwt);
 	        jwtAuthenticationResponse.setRefreshToken(refreshToken);
-
+	        
 	        return jwtAuthenticationResponse;
 	    }
 
@@ -59,16 +75,15 @@ public class AuthenticationServiceImpl {
 	        return userRepository.save(user);
 	    }
 
-	    public JwtAuthenticationResponse refreshToken(String token ){
-	        String userEmail = jwtService.extractUserName(token);
+	    public JwtAuthenticationResponse refreshToken(ReferceTokenRequest referceTokenRequest ){
+	        String userEmail = jwtService.extractUserName(referceTokenRequest.getToken());
 	        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("Invalid Email id"));  //.orElseThrow(() -> new IllegalArgumentException("Invalid Email id"))
-	        if(jwtService.isTokenValid(token, user)){
+	        if(jwtService.isTokenValid(referceTokenRequest.getToken(), user)){
 	            String jwt = jwtService.generateToken(user);
 	 
-
 	            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
 	            jwtAuthenticationResponse.setToken(jwt);
-	            jwtAuthenticationResponse.setRefreshToken(token);
+	            jwtAuthenticationResponse.setRefreshToken(referceTokenRequest.getToken());
 
 	            return jwtAuthenticationResponse;
 	        }

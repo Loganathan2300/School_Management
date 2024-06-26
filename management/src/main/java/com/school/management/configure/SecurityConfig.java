@@ -1,5 +1,6 @@
 package com.school.management.configure;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,16 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.school.management.entity.Role;
 import com.school.management.service.UserServiceImpl;
 
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    private final UserServiceImpl userService;
+	@Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+    private UserServiceImpl userService;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,7 +46,6 @@ public class SecurityConfig {
                 );
 
         return http.build();
-
     }
 
     @Bean

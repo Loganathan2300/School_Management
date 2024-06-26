@@ -13,15 +13,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
@@ -50,7 +50,8 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
  
-    @Column(nullable = false)
+    @Column
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
