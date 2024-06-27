@@ -21,7 +21,7 @@ import com.school.management.entity.Teacher;
 import com.school.management.service.QuestionService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class QuestionController {
 
 	

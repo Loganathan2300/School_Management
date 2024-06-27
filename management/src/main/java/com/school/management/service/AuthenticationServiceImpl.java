@@ -16,8 +16,7 @@ import com.school.management.dto.SignInRequest;
 import com.school.management.dto.SignUpRequest;
 import com.school.management.entity.Role;
 import com.school.management.entity.User;
-import com.school.management.exception.EmailNotFoundException;
-import com.school.management.exception.InvalidCredentialsException;
+import com.school.management.exception.CustomException;
 import com.school.management.repository.UserRepository;
 
 
@@ -45,14 +44,14 @@ public class AuthenticationServiceImpl {
 	    
 	    public JwtAuthenticationResponse signIn(SignInRequest request) {
 	        User user = userRepository.findByEmail(request.getEmail())
-	                .orElseThrow(() -> new EmailNotFoundException("Invalid email"));
+	                .orElseThrow(() -> new CustomException("Invalid email"));
 
 	        try {
 	            authenticationManager.authenticate(
 	                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
 	            );
 	        } catch (AuthenticationException e) {
-	            throw new InvalidCredentialsException("Invalid password");
+	            throw new CustomException("Invalid password");
 	        }
 
 	        String jwt = jwtService.generateToken(user);
@@ -77,10 +76,9 @@ public class AuthenticationServiceImpl {
 
 	    public JwtAuthenticationResponse refreshToken(ReferceTokenRequest referceTokenRequest ){
 	        String userEmail = jwtService.extractUserName(referceTokenRequest.getToken());
-	        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("Invalid Email id"));  //.orElseThrow(() -> new IllegalArgumentException("Invalid Email id"))
+	        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new CustomException("Invalid Email id"));  	       
 	        if(jwtService.isTokenValid(referceTokenRequest.getToken(), user)){
 	            String jwt = jwtService.generateToken(user);
-	 
 	            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
 	            jwtAuthenticationResponse.setToken(jwt);
 	            jwtAuthenticationResponse.setRefreshToken(referceTokenRequest.getToken());

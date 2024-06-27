@@ -8,8 +8,11 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.school.management.entity.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,10 +22,16 @@ import io.jsonwebtoken.security.Keys;
 public class JWTServiceImpl {
 	
 	private static String secret = "qwertyuiopkjjhgfdsazxcvdzdbnwery";
+	 private static String jwtCookie = "jwtCookie";
 
     public String generateToken(UserDetails userDetails){
+    	User user = (User) userDetails;
+        String name = user.getName();
+        String role=user.getRole();
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("user_name", name)
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getSignKey())
@@ -64,5 +73,10 @@ public class JWTServiceImpl {
 
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+    
+ // Method to get a clean JWT cookie
+    public ResponseCookie getCleanJwtCookie() {
+        return ResponseCookie.from(jwtCookie, null).path("/api").build();
     }
 }

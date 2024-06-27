@@ -1,48 +1,46 @@
 package com.school.management.exception;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
-import com.school.management.dto.ErrorResponseDTO;
+import com.school.management.dto.MessageResponse;
 
-@ControllerAdvice
+
+
+@RestControllerAdvice
 public class GlobalExceptionHandler {
-
-	@ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidEmailException(IllegalArgumentException ex) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("error", ex.getMessage());
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+	
+	@ExceptionHandler(CustomException.class)
+    public ResponseEntity<MessageResponse> handleCustomException(CustomException ex, WebRequest request) {
+		MessageResponse messageResponse = new MessageResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
     }
 	
-	 @ExceptionHandler(EmailNotFoundException.class)
-	    public ResponseEntity<ErrorResponseDTO> handleEmailNotFoundException(EmailNotFoundException ex) {
-		 ErrorResponseDTO errorResponse = new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
-	        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-	    }
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<MessageResponse> handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
+        StringBuilder errors = new StringBuilder();
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errors.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("; ");
+        });
 
-	    @ExceptionHandler(InvalidCredentialsException.class)
-	    public ResponseEntity<ErrorResponseDTO> handleInvalidPasswordException(InvalidCredentialsException ex) {
-	    	ErrorResponseDTO errorResponse = new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
-	        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-	    }
-	    
-	    @ExceptionHandler(MethodArgumentNotValidException.class)
-	    @ResponseStatus(HttpStatus.BAD_REQUEST)
-	    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-	        Map<String, String> errors = new HashMap<>();
-	        ex.getBindingResult().getAllErrors().forEach(error -> {
-	            String fieldName = ((org.springframework.validation.FieldError) error).getField();
-	            String errorMessage = error.getDefaultMessage();
-	            errors.put(fieldName, errorMessage);
-	        });
-	        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-	    }
+        MessageResponse messageResponse = new MessageResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                "Validation error",
+                errors.toString());
+
+        return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
+    }
+	
+	
 }

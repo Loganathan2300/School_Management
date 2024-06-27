@@ -18,7 +18,7 @@ import com.school.management.entity.Teacher;
 import com.school.management.service.TeacherService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class TeacherController {
 
 	@Autowired

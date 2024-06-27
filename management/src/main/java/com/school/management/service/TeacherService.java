@@ -53,7 +53,6 @@ public class TeacherService {
 	}
 
 	public List<Teacher> getPaginatedTeacher(int page, int size) {
-		
 		Pageable pageable = PageRequest.of(page, size);
         Page<Teacher> pagedTeachers = teacherRepository.findAll(pageable);
         return pagedTeachers.getContent();
@@ -63,7 +62,6 @@ public class TeacherService {
 public List<Teacher> getSearchTeacher(String name, String subject, int page, int size, String sortField, String sortDirection) {
 	 Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
      Pageable pageable = PageRequest.of(page, size, sort);
-//     Page<Student> studentsPage = teacherRepository.searchTeacher( name, subject, pageable);
 		return teacherRepository.searchTeacher( name, subject, pageable);
 	}
 }

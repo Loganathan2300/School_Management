@@ -18,7 +18,7 @@ import com.school.management.entity.Question;
 import com.school.management.service.ChoiceService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class ChoiceController {
 	
 	@Autowired

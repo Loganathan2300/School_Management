@@ -19,7 +19,7 @@ import com.school.management.entity.Answer;
 import com.school.management.service.AnswerService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class AnswerController {
 
 	@Autowired

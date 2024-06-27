@@ -21,19 +21,13 @@ import com.school.management.entity.School;
 import com.school.management.service.SchoolService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "http://localhost:3000/")
 public class SchoolController {
 	
 
 	@Autowired
 	SchoolService schoolService;
-	
-//	private final SchoolService schoolService;
-//	
-//	public SchoolController(SchoolService schoolService) {
-//		this.schoolService=schoolService;
-//	}
 	
 	@PostMapping("/school")
 	public School createSchool(@RequestBody School school) {
