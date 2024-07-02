@@ -18,10 +18,17 @@ public interface StudentRepository extends JpaRepository<Student,Long > {
 //		       "(s.name IS NULL OR s.name LIKE %:name%) OR " +
 //		       "(s.email IS NULL OR s.email LIKE %:email%)")
 //	List<Student> searchSchooldetails(@Param("id") Long id,@Param("name") String name,@Param("email") String email);
-
-	@Query("SELECT s FROM Student s WHERE " +
-		       "(s.name IS NULL OR s.name LIKE %:name%) OR " +
-		       "(s.email IS NULL OR s.email LIKE %:email%)")
-	Page<Student> searchStudents(@Param("name") String name,@Param("email") String email,Pageable pageable);
-
+//	
+//	@Query("SELECT s FROM Student s LEFT JOIN s.school school WHERE " +
+//	           "(:name IS NULL OR s.name LIKE %:name%) AND " +
+//	           "(:email IS NULL OR s.email LIKE %:email%) AND " +
+//	           "(:schoolName IS NULL OR school.name LIKE %:schoolName%)")
+//	    Page<Student> searchStudents(@Param("name") String name,@Param("email") String email,
+//	    		@Param("schoolName") String schoolname,Pageable pageable);
+	
+	 @Query("SELECT s FROM Student s WHERE " +
+	           "(:search IS NULL OR s.name LIKE %:search%) OR " +
+	           "(:search IS NULL OR s.email LIKE %:search%) OR " +
+	           "(:search IS NULL OR s.school.name LIKE %:search%)")
+	    Page<Student> searchStudents(@Param("search") String search, Pageable pageable);
 }

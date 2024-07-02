@@ -34,6 +34,11 @@ public class AuthenticationServiceImpl {
 	    private JWTServiceImpl jwtService;
 	    
 	    public User signUp(SignUpRequest signUpRequest) {
+	    	
+	    	if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+	            throw new CustomException("Email already registered: " + signUpRequest.getEmail());
+	        }
+	    	
 	        User user =  new User();
 	        user.setEmail(signUpRequest.getEmail());
 	        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
@@ -45,7 +50,6 @@ public class AuthenticationServiceImpl {
 	    public JwtAuthenticationResponse signIn(SignInRequest request) {
 	        User user = userRepository.findByEmail(request.getEmail())
 	                .orElseThrow(() -> new CustomException("Invalid email"));
-
 	        try {
 	            authenticationManager.authenticate(
 	                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -56,7 +60,7 @@ public class AuthenticationServiceImpl {
 
 	        String jwt = jwtService.generateToken(user);
 	        String refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
-
+	        
 	        JwtAuthenticationResponse jwtAuthenticationResponse =new JwtAuthenticationResponse();
 	        jwtAuthenticationResponse.setToken(jwt);
 	        jwtAuthenticationResponse.setRefreshToken(refreshToken);

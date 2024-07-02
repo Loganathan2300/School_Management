@@ -65,27 +65,75 @@ public class StudentService {
 	public void deleteSchool(Long id) {
 		studentRepository.deleteById(id);	
 	}
-
-	public List<Student> getStudentPagination(int page, int size) {
-		
-		Pageable pageable=PageRequest.of(page, size);
-		Page<Student> pageStudent=studentRepository.findAll(pageable);
-		
-		return pageStudent.getContent();
-	}
 	
-	public List<StudentDTO> searchStudents(String name, String email, int page, int size, String sortField, String sortDirection) {
+//	public List<StudentDTO> getStudents(String name, String email, String schoolName, Integer page, Integer size, String sortField, String sortDirection) {
+//        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+//        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
+//        
+//        Page<Student> studentsPage;
+//        if (name != null || email != null || schoolName != null) {
+//            studentsPage = studentRepository.searchStudents(name, email, schoolName, pageable);
+//        } else {
+//            studentsPage = studentRepository.findAll(pageable);
+//        }
+//
+//        List<StudentDTO> studentDTOs = new ArrayList<>();
+//        for (Student student : studentsPage) {
+//            StudentDTO dto = new StudentDTO();
+//            dto.setId(student.getId());
+//            dto.setName(student.getName());
+//            dto.setEmail(student.getEmail());
+//            dto.setSchoolName(student.getSchool().getName());
+//            studentDTOs.add(dto);
+//        }
+//        return studentDTOs;
+//    }
+	
+	public List<StudentDTO> getStudents(String search, Integer page, Integer size, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Student> studentsPage = studentRepository.searchStudents( name, email, pageable);
-        List<StudentDTO> StudentDTOs = new ArrayList<>();
-        for(Student student:studentsPage ) {
-        	StudentDTO dto = new StudentDTO();
+        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
+
+        
+           Page<Student> studentsPage = studentRepository.searchStudents(search, pageable);
+        List<StudentDTO> studentDTOs = new ArrayList<>();
+        for (Student student : studentsPage) {
+            StudentDTO dto = new StudentDTO();
             dto.setId(student.getId());
             dto.setName(student.getName());
             dto.setEmail(student.getEmail());
-            StudentDTOs.add(dto);
+            dto.setSchoolName(student.getSchool().getName());
+            studentDTOs.add(dto);
         }
-        return  StudentDTOs;
+        return studentDTOs;
     }
+
+    public List<Student> retrieveAllStudents() {
+        return studentRepository.findAll();
+    }
+    
+//	public List<Student> getStudentPagination(int page, int size) {
+//		
+//		Pageable pageable=PageRequest.of(page, size);
+//		Page<Student> pageStudent=studentRepository.findAll(pageable);
+//		
+//		return pageStudent.getContent();
+//	}
+//	
+//	public List<StudentDTO> searchStudents(String name, String email, String schoolName, int page, int size, String sortField, String sortDirection) {
+//        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        Page<Student> studentsPage = studentRepository.searchStudents(name, email, schoolName, pageable);
+//
+//        List<StudentDTO> studentDTOs = new ArrayList<>();
+//        for (Student student : studentsPage) {
+//            StudentDTO dto = new StudentDTO();
+//            dto.setId(student.getId());
+//            dto.setName(student.getName());
+//            dto.setEmail(student.getEmail());
+//            dto.setSchoolName(student.getSchool().getName());
+//            studentDTOs.add(dto);
+//        }
+//        return studentDTOs;
+//    }
+	
 }

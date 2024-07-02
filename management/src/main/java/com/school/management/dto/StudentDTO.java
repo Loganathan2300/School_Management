@@ -5,7 +5,15 @@ public class StudentDTO {
 	    private Long id;
 	    private String name;
 	    private String email;
+	    private String schoolname;
 	    
+	    
+		public String getSchoolName() {
+			return schoolname;
+		}
+		public void setSchoolName(String schoolName) {
+			this.schoolname = schoolName;
+		}
 		public Long getId() {
 			return id;
 		}

@@ -54,11 +54,10 @@ public class AuthenticationController {
 	
 	@PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
-        // Clear the Security Context
-        SecurityContextHolder.clearContext();
+        
+        SecurityContextHolder.clearContext(); // Clear the Security Context
 
-        // Create a cookie to remove the JWT token
-        ResponseCookie cookie = jwtService.getCleanJwtCookie();
+        ResponseCookie cookie = jwtService.getCleanJwtCookie();   // Create a cookie to remove the JWT token
         
         // Return response indicating the user has been signed out
         return ResponseEntity.ok()

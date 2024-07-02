@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.management.dto.PaginationDto;
 import com.school.management.dto.StudentDTO;
+//import com.school.management.dto.StudentSearchCriteria;
+//import com.school.management.dto.PaginationDto;
+//import com.school.management.dto.StudentDTO;
 import com.school.management.entity.School;
 import com.school.management.entity.Student;
 import com.school.management.service.StudentService;
@@ -34,29 +38,63 @@ public class StudentController {
 		return this.studentService.createStudent(student);
 	}
 	
-	@GetMapping("/student")
-	public List<Student> retriveStudent(){
-		return this.studentService.retriveStudent();
-	}
-	
 	@GetMapping("/student/{id}")
 	public Student retrieveStudentId(@PathVariable Long id) {
 		return this.studentService.retrieveStudentId(id);
 	}
 	
-	@GetMapping("/student/pagination")
-	public List<Student>getStudentPagination(PaginationDto paginationDto){
-		return this.studentService.getStudentPagination(paginationDto.getPage(),paginationDto.getSize());
-	}
+
+//	@GetMapping("/student")
+//	 public List<?> getStudent(StudentSearchCriteria student){
+//	        
+//	        if (student.getName() != null || student.getEmail() != null || student.getSchoolName() != null) {
+//	            int defaultPage = (student.getPage() != null) ? student.getPage() : 0;
+//	            int defaultSize = (student.getSize() != null) ? student.getPage() : 3;
+//	            String defaultSortField = (student.getSortField() != null) ? student.getSortField() : "name";
+//	            String defaultSortDirection = (student.getSortDirection() != null) ? student.getSortDirection() : "asc";
+//	            return studentService.searchStudents(student.getName(), student.getEmail(), student.getSchoolName(), defaultPage, defaultSize, defaultSortField, defaultSortDirection);
+//	        } else if (student.getPage() != null && student.getSize() != null) {
+//	            return this.studentService.getStudentPagination(student.getPage(), student.getSize());
+//	        } else {
+//	            return this.studentService.retriveStudent();
+//	        }
+//	    }
 	
-	@GetMapping("/student/search")
-    public List<StudentDTO> searchStudents( String name, String email,int page,int size,String sortField,String sortDirection) {
-        return studentService.searchStudents(name, email, page, size, sortField, sortDirection);
-    }	
+//	@GetMapping("/student")
+//	public List<StudentDTO> getStudent(StudentSearchCriteria student) {
+//	    String sortField = (student.getSortField() != null) ? student.getSortField() : "name";
+//	    String sortDirection = (student.getSortDirection() != null) ? student.getSortDirection() : "asc";
+//	    return studentService.getStudents(student.getName(), student.getEmail(), student.getSchoolName(), student.getPage(), student.getSize(), sortField, sortDirection);
+//	}
+	
+	@GetMapping("/student")
+	public List<StudentDTO> getStudents(@RequestParam(required = false) String search,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "name") String sortField,
+            @RequestParam(required = false, defaultValue = "asc") String sortDirection) {
+       return studentService.getStudents(search, page, size, sortField, sortDirection);
+    }
 	
 	@DeleteMapping("student/{id}")
     public void deleteSchool(@PathVariable Long id) {
 		studentService.deleteSchool(id);
     }
+	
+	
+	@GetMapping("/students")
+	public List<Student> retriveStudent(){
+		return this.studentService.retriveStudent();
+	}
+	
+//	@GetMapping("/student/pagination")
+//	public List<Student>getStudentPagination(PaginationDto paginationDto){
+//		return this.studentService.getStudentPagination(paginationDto.getPage(),paginationDto.getSize());
+//	}
+//	
+//	@GetMapping("/student/search")
+//    public List<StudentDTO> searchStudents( String name,String schoolname, String email,int page,int size,String sortField,String sortDirection) {
+//        return studentService.searchStudents(name,schoolname, email, page, size, sortField, sortDirection);
+//    }
 
 }

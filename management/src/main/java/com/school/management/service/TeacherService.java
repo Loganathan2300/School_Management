@@ -59,9 +59,9 @@ public class TeacherService {
 	}
 
 	
-public List<Teacher> getSearchTeacher(String name, String subject, int page, int size, String sortField, String sortDirection) {
+public List<Teacher> getSearchTeacher(String name, String subject,String schoolname ,int page, int size, String sortField, String sortDirection) {
 	 Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
      Pageable pageable = PageRequest.of(page, size, sort);
-		return teacherRepository.searchTeacher( name, subject, pageable);
+		return teacherRepository.searchTeacher( name, subject,schoolname, pageable);
 	}
 }
