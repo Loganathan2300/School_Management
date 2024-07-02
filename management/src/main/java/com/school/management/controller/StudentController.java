@@ -43,30 +43,6 @@ public class StudentController {
 		return this.studentService.retrieveStudentId(id);
 	}
 	
-
-//	@GetMapping("/student")
-//	 public List<?> getStudent(StudentSearchCriteria student){
-//	        
-//	        if (student.getName() != null || student.getEmail() != null || student.getSchoolName() != null) {
-//	            int defaultPage = (student.getPage() != null) ? student.getPage() : 0;
-//	            int defaultSize = (student.getSize() != null) ? student.getPage() : 3;
-//	            String defaultSortField = (student.getSortField() != null) ? student.getSortField() : "name";
-//	            String defaultSortDirection = (student.getSortDirection() != null) ? student.getSortDirection() : "asc";
-//	            return studentService.searchStudents(student.getName(), student.getEmail(), student.getSchoolName(), defaultPage, defaultSize, defaultSortField, defaultSortDirection);
-//	        } else if (student.getPage() != null && student.getSize() != null) {
-//	            return this.studentService.getStudentPagination(student.getPage(), student.getSize());
-//	        } else {
-//	            return this.studentService.retriveStudent();
-//	        }
-//	    }
-	
-//	@GetMapping("/student")
-//	public List<StudentDTO> getStudent(StudentSearchCriteria student) {
-//	    String sortField = (student.getSortField() != null) ? student.getSortField() : "name";
-//	    String sortDirection = (student.getSortDirection() != null) ? student.getSortDirection() : "asc";
-//	    return studentService.getStudents(student.getName(), student.getEmail(), student.getSchoolName(), student.getPage(), student.getSize(), sortField, sortDirection);
-//	}
-	
 	@GetMapping("/student")
 	public List<StudentDTO> getStudents(@RequestParam(required = false) String search,
             @RequestParam(required = false) Integer page,

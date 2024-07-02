@@ -3,11 +3,11 @@ package com.school.management.dto;
 public class StudentScore {
 
 	private Long studentId;
-    private int score;
+    private int totalMark;
 
-    public StudentScore(Long studentId, int score) {
+    public StudentScore(Long studentId, int totalMark) {
         this.studentId = studentId;
-        this.score = score;
+        this.totalMark = totalMark;
     }
 
     public Long getStudentId() {
@@ -19,10 +19,10 @@ public class StudentScore {
     }
 
     public int getScore() {
-        return score;
+        return totalMark;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScore(int totalMark) {
+        this.totalMark = totalMark;
     }
 }

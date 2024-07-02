@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.school.management.entity.School;
 import com.school.management.entity.Teacher;
+import com.school.management.exception.CustomException;
 import com.school.management.repository.SchoolRepository;
 import com.school.management.repository.TeacherRepository;
 
@@ -20,11 +21,11 @@ public class TeacherService {
 
 	@Autowired
 	TeacherRepository teacherRepository;
-	
+
 	@Autowired
 	SchoolRepository schoolRepository;
 
-	public Teacher createTeacher( Teacher teacher) {
+	public Teacher createTeacher(Teacher teacher) {
 		return teacherRepository.save(teacher);
 	}
 
@@ -35,18 +36,18 @@ public class TeacherService {
 	public Teacher retriveTeacher(Long id) {
 		return teacherRepository.findById(id).orElse(null);
 	}
-	
+
 	public School addteacherToSchool(Long schoolId, Teacher teacher) {
-        Optional<School> optionalSchool = schoolRepository.findById(schoolId);
-        if (optionalSchool.isPresent()) {
-            School school = optionalSchool.get();
-            teacher.setSchool(school);
-            teacherRepository.save(teacher);
-            return schoolRepository.save(school);
-        } else {
-            throw new RuntimeException("School not found");
-        }
-    }
+		Optional<School> optionalSchool = schoolRepository.findById(schoolId);
+		if (optionalSchool.isPresent()) {
+			School school = optionalSchool.get();
+			teacher.setSchool(school);
+			teacherRepository.save(teacher);
+			return schoolRepository.save(school);
+		} else {
+			throw new CustomException("School not found");
+		}
+	}
 
 	public void deleteTeacherId(Long id) {
 		teacherRepository.deleteById(id);
@@ -54,14 +55,21 @@ public class TeacherService {
 
 	public List<Teacher> getPaginatedTeacher(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
-        Page<Teacher> pagedTeachers = teacherRepository.findAll(pageable);
-        return pagedTeachers.getContent();
+		Page<Teacher> pagedTeachers = teacherRepository.findAll(pageable);
+		return pagedTeachers.getContent();
 	}
 
-	
-public List<Teacher> getSearchTeacher(String name, String subject,String schoolname ,int page, int size, String sortField, String sortDirection) {
-	 Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-     Pageable pageable = PageRequest.of(page, size, sort);
-		return teacherRepository.searchTeacher( name, subject,schoolname, pageable);
+	public List<Teacher> getSearchTeacher(String search, int page, int size, String sortField, String sortDirection) {
+		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending():Sort.by(sortField).descending();
+		Pageable pageable = PageRequest.of(page, size, sort);
+		Page<Teacher> teachersPage = teacherRepository.searchTeacher(search, pageable);
+	    return teachersPage.getContent();
 	}
+	
+//	public List<Teacher> getSearchTeacher(String search, int page, int size, String sortField, String sortDirection) {
+//	Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending()
+//			: Sort.by(sortField).descending();
+//	Pageable pageable = PageRequest.of(page, size, sort);
+//	return teacherRepository.searchTeacher(search, pageable);
+//}
 }

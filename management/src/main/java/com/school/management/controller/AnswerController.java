@@ -3,6 +3,8 @@ package com.school.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ import com.school.management.entity.Answer;
 import com.school.management.service.AnswerService;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("api/v1")
 public class AnswerController {
 
 	@Autowired
@@ -31,6 +33,7 @@ public class AnswerController {
     }
     
     @GetMapping("/answer/{studentId}")
+    @PreAuthorize("hasAnyAuthority('Admin') or hasAnyAuthority('User')")
     public int getStudentScore(@PathVariable Long studentId) {
         return answerService.calculateScore(studentId);
     }
@@ -41,6 +44,7 @@ public class AnswerController {
     }
     
     @GetMapping("/answer/student/score")
+    @PreAuthorize("hasAnyAuthority('Admin')")
     public List<StudentScore> getAllStudentScores() {
         return answerService.getAllStudentScores();
     }

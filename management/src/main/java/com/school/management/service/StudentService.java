@@ -66,33 +66,9 @@ public class StudentService {
 		studentRepository.deleteById(id);	
 	}
 	
-//	public List<StudentDTO> getStudents(String name, String email, String schoolName, Integer page, Integer size, String sortField, String sortDirection) {
-//        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-//        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
-//        
-//        Page<Student> studentsPage;
-//        if (name != null || email != null || schoolName != null) {
-//            studentsPage = studentRepository.searchStudents(name, email, schoolName, pageable);
-//        } else {
-//            studentsPage = studentRepository.findAll(pageable);
-//        }
-//
-//        List<StudentDTO> studentDTOs = new ArrayList<>();
-//        for (Student student : studentsPage) {
-//            StudentDTO dto = new StudentDTO();
-//            dto.setId(student.getId());
-//            dto.setName(student.getName());
-//            dto.setEmail(student.getEmail());
-//            dto.setSchoolName(student.getSchool().getName());
-//            studentDTOs.add(dto);
-//        }
-//        return studentDTOs;
-//    }
-	
 	public List<StudentDTO> getStudents(String search, Integer page, Integer size, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
-
         
            Page<Student> studentsPage = studentRepository.searchStudents(search, pageable);
         List<StudentDTO> studentDTOs = new ArrayList<>();

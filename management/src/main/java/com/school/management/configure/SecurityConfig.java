@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +22,7 @@ import com.school.management.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
 	@Autowired
@@ -37,8 +39,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("api/v1/auth/**").permitAll()
-                        .requestMatchers("api/v1/admin/**").hasAnyAuthority(Role.ADMIN)
-                        .requestMatchers("api/v1/user/**").hasAnyAuthority(Role.USER,Role.ADMIN)
+                        .requestMatchers("api/v1/admin/**").hasAnyAuthority(Role.ADMIN)   //teacher
+                        .requestMatchers("api/v1").authenticated()
+                        .requestMatchers("api/v1/user/**").hasAnyAuthority(Role.USER,Role.ADMIN) //student
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
