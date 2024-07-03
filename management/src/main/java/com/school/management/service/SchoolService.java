@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.school.management.dto.SchoolDto;
 import com.school.management.entity.School;
+import com.school.management.exception.CustomException;
 import com.school.management.repository.SchoolRepository;
 
 @Service
@@ -31,7 +32,7 @@ public class SchoolService {
     }
 	
 	public School retrieveSchoolId(Long id) {
-		return schoolRepository.findById(id).orElse(null);
+		return schoolRepository.findById(id).orElseThrow(()-> new CustomException("SchoolId not found.."));
 	}
 	
 	 public School update(long id, School school) throws AccountNotFoundException { 

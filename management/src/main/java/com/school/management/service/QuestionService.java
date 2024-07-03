@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.school.management.dto.QuestionDTO;
 import com.school.management.entity.Question;
 import com.school.management.entity.Teacher;
+import com.school.management.exception.CustomException;
 import com.school.management.repository.QuestionRepository;
 import com.school.management.repository.TeacherRepository;
 
@@ -28,10 +29,6 @@ public class QuestionService {
 	@Autowired
 	TeacherRepository teacherRepository;
 
-	public Question createQuestion(Question question) {
-		return questionRepository.save(question);
-	}
-
 	public Teacher createQuestions(long id, Question question) {
 		Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
 		if(optionalTeacher.isPresent()) {
@@ -40,7 +37,7 @@ public class QuestionService {
             questionRepository.save(question);
             return teacherRepository.save(teacher);
 		}else {
-            throw new RuntimeException("School not found");
+            throw new CustomException("School not found");
         }
 	}
 
@@ -106,5 +103,7 @@ public class QuestionService {
 	}
 	
 	
-	
+//	public Question createQuestion(Question question) {
+//		return questionRepository.save(question);
+//	}
 }

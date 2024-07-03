@@ -18,15 +18,15 @@ import com.school.management.entity.Question;
 import com.school.management.service.ChoiceService;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/admin")
 public class ChoiceController {
 	
 	@Autowired
 	ChoiceService choiceService;
 	
-	@PostMapping("choice/question/{id}")
-	public Question createQuestions(@PathVariable long id, @RequestBody Choice choice) {
-		return choiceService.createQuestions(id,choice);
+	@PostMapping("choice/{questionId}")
+	public Question createQuestions(@PathVariable long questionId, @RequestBody Choice choice) {
+		return choiceService.createQuestions(questionId,choice);
 	}
 	
 	@GetMapping("/choice")
@@ -55,7 +55,8 @@ public class ChoiceController {
 	}
 	
 	@DeleteMapping("/choice/{id}")
-	public void deleteChoiceId(@PathVariable Long id){
+	public String deleteChoiceId(@PathVariable Long id){
 		 choiceService.deleteChoiceId(id);
+		 return "Message: successfully deleted";
 	}
 }

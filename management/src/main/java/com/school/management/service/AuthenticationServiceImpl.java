@@ -45,7 +45,34 @@ public class AuthenticationServiceImpl {
 	        user.setName(signUpRequest.getName());
 	        user.setRole(Role.USER);
 	        return userRepository.save(user);
-	    }	    
+	    }	 
+	    
+	    public User superAdminSignUp(SignUpRequest signUpRequest) {
+	    	
+	    	if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+	            throw new CustomException("Email already registered: " + signUpRequest.getEmail());
+	        }
+			User user =  new User();
+	        user.setEmail(signUpRequest.getEmail());
+	        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+	        user.setName(signUpRequest.getName());
+	        user.setRole(Role.SUPERADMIN);
+	        return userRepository.save(user);
+		}
+	    
+	    public User adminSignUp(SignUpRequest signUpRequest) {
+	    	
+	    	if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+	            throw new CustomException("Email already registered: " + signUpRequest.getEmail());
+	        }
+	    	
+	        User user =  new User();
+	        user.setEmail(signUpRequest.getEmail());
+	        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+	        user.setName(signUpRequest.getName());
+	        user.setRole(Role.ADMIN);
+	        return userRepository.save(user);
+	    }
 	    
 	    public JwtAuthenticationResponse signIn(SignInRequest request) {
 	        User user = userRepository.findByEmail(request.getEmail())
@@ -68,16 +95,6 @@ public class AuthenticationServiceImpl {
 	        return jwtAuthenticationResponse;
 	    }
 
-
-	    public User adminSignUp(SignUpRequest signUpRequest) {
-	        User user =  new User();
-	        user.setEmail(signUpRequest.getEmail());
-	        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-	        user.setName(signUpRequest.getName());
-	        user.setRole(Role.ADMIN);
-	        return userRepository.save(user);
-	    }
-
 	    public JwtAuthenticationResponse refreshToken(ReferceTokenRequest referceTokenRequest ){
 	        String userEmail = jwtService.extractUserName(referceTokenRequest.getToken());
 	        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new CustomException("Invalid Email id"));  	       
@@ -91,4 +108,5 @@ public class AuthenticationServiceImpl {
 	        }
 	        return null;
 	    }
+	    
 }

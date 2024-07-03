@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.school.management.dto.AnswerDTO;
@@ -22,6 +23,7 @@ import com.school.management.dto.StudentDTO;
 import com.school.management.dto.StudentScore;
 import com.school.management.entity.Answer;
 import com.school.management.entity.Question;
+import com.school.management.exception.CustomException;
 import com.school.management.repository.AnswerRepository;
 import com.school.management.repository.ChoiceRepository;
 import com.school.management.repository.QuestionRepository;
@@ -59,6 +61,7 @@ public class AnswerService {
 		        studentDTO.setId(answer.getStudent().getId());
 		        studentDTO.setName(answer.getStudent().getName());
 		        studentDTO.setEmail(answer.getStudent().getEmail());
+		        studentDTO.setSchool_name(answer.getStudent().getSchool());
 		        answerDTO.setStudent(studentDTO);
 
 		        QuestionDTO questionDTO = new QuestionDTO();
@@ -86,11 +89,11 @@ public class AnswerService {
 	        Long questionId = answer.getQuestion().getId();
 	
 	        if (answerRepository.existsByStudentIdAndQuestionId(studentId, questionId)) {
-	            throw new RuntimeException("Student has already answered this question!");
+	            throw new CustomException("Student has already answered this question..!");
 	        }
 	        
 	        if (!validateAnswer(answer)) {
-	            throw new RuntimeException("Invalid Answer");
+	            throw new CustomException("Invalid Answer");
 	        }
 	        return answerRepository.save(answer);
 	    }
@@ -136,11 +139,11 @@ public class AnswerService {
 	    public Answer updateAnswer(Answer answer) {
 	        Long answerId = answer.getId();
 	        if (!answerRepository.existsById(answerId)) {
-	            throw new RuntimeException("Answer with ID " + answerId + " not found!");
+	            throw new CustomException("Answer with ID " + answerId + " not found!");
 	        }
 	
 	        if (!validateAnswer(answer)) {
-	            throw new RuntimeException("Invalid Answer");
+	            throw new CustomException("Invalid Answer");
 	        }
 	
 	        return answerRepository.save(answer);
@@ -150,7 +153,7 @@ public class AnswerService {
 	        answerRepository.deleteById(id);
 	    }
 	
-	    public int calculateScore(Long studentId) {
+	    public String calculateScore(Long studentId) {
 	        int score = 0;
 	        List<Answer> studentAnswers = answerRepository.findAllByStudentId(studentId);
 	
@@ -160,7 +163,8 @@ public class AnswerService {
 	                score += question.getPoints();
 	            }
 	        }
-	        return score;
+	        
+	        return "Student_Id : "+studentId+"\n"+"student_Result :"+score;
 	    }
 	    
 	    public List<StudentScore> getAllStudentScores() {
@@ -250,6 +254,43 @@ public class AnswerService {
 	            answerDTOs.add(answerDTO);
 	        }
 	        return answerDTOs;
-	    } 
-	    
+	    }
+
+		public List<AnswerDTO> getStudents(String search, Integer page, Integer size, String sortField,
+				String sortDirection) {
+			Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+	        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
+	        Page<Answer> answerPage = answerRepository.searchStudents(search, pageable);
+	        List<AnswerDTO> answerDTOs = new ArrayList<>();
+	        
+	        for(Answer answer:answerPage) {
+	        	
+	        	AnswerDTO answerDTO = new AnswerDTO();
+	            answerDTO.setId(answer.getId());
+	            answerDTO.setAnswers(answer.getAnswers());
+
+	            StudentDTO studentDTO = new StudentDTO();
+	            studentDTO.setId(answer.getStudent().getId());
+	            studentDTO.setName(answer.getStudent().getName());
+	            studentDTO.setEmail(answer.getStudent().getEmail());
+	            answerDTO.setStudent(studentDTO);
+
+	            QuestionDTO questionDTO = new QuestionDTO();
+	            questionDTO.setId(answer.getQuestion().getId());
+	            questionDTO.setSubject(answer.getQuestion().getSubject());
+	            questionDTO.setContent(answer.getQuestion().getContent());
+	            questionDTO.setPoints(answer.getQuestion().getPoints());
+	            answerDTO.setQuestion(questionDTO);
+
+	            ChoiceDTO choiceDTO = new ChoiceDTO();
+	            choiceDTO.setId(answer.getChoice().getId());
+	            choiceDTO.setContent(answer.getChoice().getContent());
+	            answerDTO.setChoice(choiceDTO);
+
+	            answerDTOs.add(answerDTO);
+	        }
+			return answerDTOs;
+		} 
+		
+
 }

@@ -1,18 +1,22 @@
 package com.school.management.dto;
 
+import com.school.management.entity.School;
+
+
 public class StudentDTO {
 
 	    private Long id;
 	    private String name;
 	    private String email;
 	    private String schoolname;
+	    private School school_name;
 	    
 	    
 		public String getSchoolName() {
 			return schoolname;
 		}
-		public void setSchoolName(String schoolName) {
-			this.schoolname = schoolName;
+		public void setSchoolName(String school) {
+			this.schoolname = school;
 		}
 		public Long getId() {
 			return id;
@@ -32,6 +36,13 @@ public class StudentDTO {
 		public void setEmail(String email) {
 			this.email = email;
 		}
+		public School getSchool_name() {
+			return school_name;
+		}
+		public void setSchool_name(School school_name) {
+			this.school_name = school_name;
+		}
+		
 	    
 	    
 }

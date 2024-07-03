@@ -21,21 +21,16 @@ import com.school.management.entity.Teacher;
 import com.school.management.service.QuestionService;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/admin")
 public class QuestionController {
 
 	
 	@Autowired
 	QuestionService questionService;
 	
-	@PostMapping("/question/teacher/{id}")
-	public Teacher createQuestions(@PathVariable long id, @RequestBody Question question) {
-		return questionService.createQuestions(id,question);
-	}
-	
-	@PostMapping("/question")
-	public Question createQuestion(@RequestBody final Question question) {
-		return this.questionService.createQuestion(question);
+	@PostMapping("/question/{teacherid}")
+	public Teacher createQuestions(@PathVariable long teacherid, @RequestBody Question question) {
+		return questionService.createQuestions(teacherid,question);
 	}
 	
 	@GetMapping("/question")
@@ -67,5 +62,10 @@ public class QuestionController {
 	public void deleteTeacherId(@PathVariable Long id) {
 		questionService.deleteTeacherId(id);
 	}
+	
+//	@PostMapping("/question")
+//	public Question createQuestion(@RequestBody final Question question) {
+//		return this.questionService.createQuestion(question);
+//	}
 }
 

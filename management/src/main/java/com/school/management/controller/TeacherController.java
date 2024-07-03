@@ -21,20 +21,15 @@ import com.school.management.entity.Teacher;
 import com.school.management.service.TeacherService;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/admin")
 public class TeacherController {
 
 	@Autowired
 	TeacherService teacherService;
 	
-	@PostMapping("/teacher")
-	public Teacher createTeacher(@RequestBody final Teacher teacher) {
-		return this.teacherService.createTeacher(teacher);
-	}
-	
-	@PostMapping("/teacher/school/{id}")
-	public School addtoTeacher(@PathVariable Long id, @RequestBody Teacher teacher) {
-		return this.teacherService.addteacherToSchool(id,teacher);
+	@PostMapping("/teacher/{schoolId}")
+	public School addtoTeacher(@PathVariable Long schoolId, @RequestBody Teacher teacher) {
+		return this.teacherService.addteacherToSchool(schoolId,teacher);
 	}
 	
 	@GetMapping("/teacher/{id}")
@@ -59,6 +54,11 @@ public class TeacherController {
 	@GetMapping("/teachers")
 	public List<Teacher> retriveTeachers(){
 		return this.teacherService.retriveTeachers();
+	}
+	
+	@PostMapping("/teacher")
+	public Teacher createTeacher(@RequestBody final Teacher teacher) {
+		return this.teacherService.createTeacher(teacher);
 	}
 	
 //	@GetMapping("/teacher/pagination")

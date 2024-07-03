@@ -21,7 +21,7 @@ import com.school.management.entity.School;
 import com.school.management.service.SchoolService;
 
 @RestController
-@RequestMapping("api/v1/admin")
+@RequestMapping("api/v1/super-admin")
 @CrossOrigin(origins = "http://localhost:3000/")
 public class SchoolController {
 	
@@ -40,7 +40,7 @@ public class SchoolController {
 	}
 	
 	@GetMapping("/school/{id}")
-	public School retrieveSchoolId(@PathVariable("id") Long id) {
+	public School retrieveSchoolId(@PathVariable Long id) {
 		return this.schoolService.retrieveSchoolId(id);
 	}
 	
@@ -60,8 +60,9 @@ public class SchoolController {
     }
 	
 	@DeleteMapping("school/{id}")
-    public void deleteSchool(@PathVariable Long id) {
+    public String deleteSchool(@PathVariable Long id) {
 		schoolService.deleteSchool(id);
+		return "Message: Successfully delete...";
     }
 	
 }

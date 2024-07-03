@@ -28,9 +28,9 @@ public class StudentController {
 	@Autowired
 	StudentService studentService;
 	
-	 @PostMapping("/schools/students/{Id}")
-	 public School addStudentToSchool(@PathVariable Long Id,@RequestBody Student student) {
-	       return this.studentService.addStudentToSchool(Id, student);
+	 @PostMapping("/students/{schoolId}")
+	 public School addStudentToSchool(@PathVariable Long schoolId,@RequestBody Student student) {
+	       return this.studentService.addStudentToSchool(schoolId, student);
 	  }
 	
 	@PostMapping("/student") 

@@ -41,6 +41,11 @@ public class AuthenticationController {
     public User adminSignUp(@RequestBody SignUpRequest signUpRequest){
         return authenticationService.adminSignUp(signUpRequest);
     }
+	
+	@PostMapping("/superadmin-signup")
+    public User superAdminSignUp(@RequestBody SignUpRequest signUpRequest){
+        return authenticationService.superAdminSignUp(signUpRequest);
+    }
 
 	@PostMapping("/login")
     public JwtAuthenticationResponse login(@Valid @RequestBody SignInRequest signInRequest){
