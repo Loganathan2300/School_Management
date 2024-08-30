@@ -39,10 +39,11 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("api/v1/auth/**").permitAll()
-                        .requestMatchers("api/v1/super-admin/**").hasAnyAuthority(Role.SUPERADMIN) //Management
+                        .requestMatchers("api/v1/super-admin/**").permitAll()
+//                        .requestMatchers("api/v1/super-admin/**").hasAnyAuthority(Role.SUPERADMIN) //Management
                         .requestMatchers("api/v1/admin/**").hasAnyAuthority(Role.ADMIN,Role.SUPERADMIN)   //teacher
                         .requestMatchers("api/v1/user/**").hasAnyAuthority(Role.USER,Role.ADMIN,Role.SUPERADMIN) //student
-                        .requestMatchers("api/v1").authenticated()   
+                        .requestMatchers("api/v1").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

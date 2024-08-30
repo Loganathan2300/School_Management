@@ -224,73 +224,73 @@ public class AnswerService {
 	    }
 
 	
-	    public List<AnswerDTO> searchAnswers( Boolean answers, Long student, Long question, Long choice) {
-	        List<Answer> answerData = answerRepository.searchAnswers(answers, student, question, choice);
-	        List<AnswerDTO> answerDTOs = new ArrayList<>();
-	       
-	        for (Answer answer : answerData) {
-	            AnswerDTO answerDTO = new AnswerDTO();
-	            answerDTO.setId(answer.getId());
-	            answerDTO.setAnswers(answer.getAnswers());
+//	    public List<AnswerDTO> searchAnswers( Boolean answers, Long student, Long question, Long choice) {
+//	        List<Answer> answerData = answerRepository.searchAnswers(answers, student, question, choice);
+//	        List<AnswerDTO> answerDTOs = new ArrayList<>();
+//
+//	        for (Answer answer : answerData) {
+//	            AnswerDTO answerDTO = new AnswerDTO();
+//	            answerDTO.setId(answer.getId());
+//	            answerDTO.setAnswers(answer.getAnswers());
+//
+//	            StudentDTO studentDTO = new StudentDTO();
+//	            studentDTO.setId(answer.getStudent().getId());
+//	            studentDTO.setName(answer.getStudent().getName());
+//	            studentDTO.setEmail(answer.getStudent().getEmail());
+//	            answerDTO.setStudent(studentDTO);
+//
+//	            QuestionDTO questionDTO = new QuestionDTO();
+//	            questionDTO.setId(answer.getQuestion().getId());
+//	            questionDTO.setSubject(answer.getQuestion().getSubject());
+//	            questionDTO.setContent(answer.getQuestion().getContent());
+//	            questionDTO.setPoints(answer.getQuestion().getPoints());
+//	            answerDTO.setQuestion(questionDTO);
+//
+//	            ChoiceDTO choiceDTO = new ChoiceDTO();
+//	            choiceDTO.setId(answer.getChoice().getId());
+//	            choiceDTO.setContent(answer.getChoice().getContent());
+//	            answerDTO.setChoice(choiceDTO);
+//
+//	            answerDTOs.add(answerDTO);
+//	        }
+//	        return answerDTOs;
+//	    }
 
-	            StudentDTO studentDTO = new StudentDTO();
-	            studentDTO.setId(answer.getStudent().getId());
-	            studentDTO.setName(answer.getStudent().getName());
-	            studentDTO.setEmail(answer.getStudent().getEmail());
-	            answerDTO.setStudent(studentDTO);
-
-	            QuestionDTO questionDTO = new QuestionDTO();
-	            questionDTO.setId(answer.getQuestion().getId());
-	            questionDTO.setSubject(answer.getQuestion().getSubject());
-	            questionDTO.setContent(answer.getQuestion().getContent());
-	            questionDTO.setPoints(answer.getQuestion().getPoints());
-	            answerDTO.setQuestion(questionDTO);
-
-	            ChoiceDTO choiceDTO = new ChoiceDTO();
-	            choiceDTO.setId(answer.getChoice().getId());
-	            choiceDTO.setContent(answer.getChoice().getContent());
-	            answerDTO.setChoice(choiceDTO);
-
-	            answerDTOs.add(answerDTO);
-	        }
-	        return answerDTOs;
-	    }
-
-		public List<AnswerDTO> getStudents(String search, Integer page, Integer size, String sortField,
-				String sortDirection) {
-			Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-	        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
-	        Page<Answer> answerPage = answerRepository.searchStudents(search, pageable);
-	        List<AnswerDTO> answerDTOs = new ArrayList<>();
-	        
-	        for(Answer answer:answerPage) {
-	        	
-	        	AnswerDTO answerDTO = new AnswerDTO();
-	            answerDTO.setId(answer.getId());
-	            answerDTO.setAnswers(answer.getAnswers());
-
-	            StudentDTO studentDTO = new StudentDTO();
-	            studentDTO.setId(answer.getStudent().getId());
-	            studentDTO.setName(answer.getStudent().getName());
-	            studentDTO.setEmail(answer.getStudent().getEmail());
-	            answerDTO.setStudent(studentDTO);
-
-	            QuestionDTO questionDTO = new QuestionDTO();
-	            questionDTO.setId(answer.getQuestion().getId());
-	            questionDTO.setSubject(answer.getQuestion().getSubject());
-	            questionDTO.setContent(answer.getQuestion().getContent());
-	            questionDTO.setPoints(answer.getQuestion().getPoints());
-	            answerDTO.setQuestion(questionDTO);
-
-	            ChoiceDTO choiceDTO = new ChoiceDTO();
-	            choiceDTO.setId(answer.getChoice().getId());
-	            choiceDTO.setContent(answer.getChoice().getContent());
-	            answerDTO.setChoice(choiceDTO);
-
-	            answerDTOs.add(answerDTO);
-	        }
-			return answerDTOs;
-		} 
-		
+//		public List<AnswerDTO> getStudents(String search, Integer page, Integer size, String sortField,
+//				String sortDirection) {
+//			Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+//	        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 6, sort);
+//	        Page<Answer> answerPage = answerRepository.searchStudents(search, pageable);
+//	        List<AnswerDTO> answerDTOs = new ArrayList<>();
+//
+//	        for(Answer answer:answerPage) {
+//
+//	        	AnswerDTO answerDTO = new AnswerDTO();
+//	            answerDTO.setId(answer.getId());
+//	            answerDTO.setAnswers(answer.getAnswers());
+//
+//	            StudentDTO studentDTO = new StudentDTO();
+//	            studentDTO.setId(answer.getStudent().getId());
+//	            studentDTO.setName(answer.getStudent().getName());
+//	            studentDTO.setEmail(answer.getStudent().getEmail());
+//	            answerDTO.setStudent(studentDTO);
+//
+//	            QuestionDTO questionDTO = new QuestionDTO();
+//	            questionDTO.setId(answer.getQuestion().getId());
+//	            questionDTO.setSubject(answer.getQuestion().getSubject());
+//	            questionDTO.setContent(answer.getQuestion().getContent());
+//	            questionDTO.setPoints(answer.getQuestion().getPoints());
+//	            answerDTO.setQuestion(questionDTO);
+//
+//	            ChoiceDTO choiceDTO = new ChoiceDTO();
+//	            choiceDTO.setId(answer.getChoice().getId());
+//	            choiceDTO.setContent(answer.getChoice().getContent());
+//	            answerDTO.setChoice(choiceDTO);
+//
+//	            answerDTOs.add(answerDTO);
+//	        }
+//			return answerDTOs;
+//		}
+//
 
 }

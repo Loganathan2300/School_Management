@@ -40,14 +40,14 @@ public class AnswerController {
         return answerService.calculateScore(studentId);
     }
     
-    @GetMapping("/answer")
-	public List<AnswerDTO> getStudents(@RequestParam(required = false) String search,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
-            @RequestParam(required = false, defaultValue = "name") String sortField,
-            @RequestParam(required = false, defaultValue = "asc") String sortDirection) {
-       return answerService.getStudents(search, page, size, sortField, sortDirection);
-    }
+//    @GetMapping("/answer")
+//	public List<AnswerDTO> getStudents(@RequestParam(required = false) String search,
+//            @RequestParam(required = false) Integer page,
+//            @RequestParam(required = false) Integer size,
+//            @RequestParam(required = false, defaultValue = "name") String sortField,
+//            @RequestParam(required = false, defaultValue = "asc") String sortDirection) {
+//       return answerService.getStudents(search, page, size, sortField, sortDirection);
+//    }
     
     @GetMapping("/answers")
     @PreAuthorize("hasAnyAuthority('Admin') or hasAnyAuthority('Super_Admin')")
@@ -67,11 +67,11 @@ public class AnswerController {
         return answerService.getAnswers(paginationDto.getPage(),paginationDto.getSize());
     }
     
-    @GetMapping("/answer/search")
-    @PreAuthorize("hasAnyAuthority('Admin') or hasAnyAuthority('User') or hasAnyAuthority('Super_Admin')")
-    public List<AnswerDTO> searchAnswers(Boolean answers,Long student,Long question,Long choice) {
-        return answerService.searchAnswers(answers, student, question, choice);
-    }
+//    @GetMapping("/answer/search")
+//    @PreAuthorize("hasAnyAuthority('Admin') or hasAnyAuthority('User') or hasAnyAuthority('Super_Admin')")
+//    public List<AnswerDTO> searchAnswers(Boolean answers,Long student,Long question,Long choice) {
+//        return answerService.searchAnswers(answers, student, question, choice);
+//    }
     
     @PutMapping("answer/{id}")
     @PreAuthorize("hasAnyAuthority('Admin') or hasAnyAuthority('User') or hasAnyAuthority('Super_Admin')")

@@ -15,16 +15,16 @@ public interface AnswerRepository extends JpaRepository<Answer, Long>{
 	boolean existsByStudentIdAndQuestionId(Long studentId, Long questionId);
 	List<Answer> findAllByStudentId(Long studentId);
 
-	@Query("SELECT a FROM Answer a WHERE " +
-		       "(a.answers IS NULL OR a.answers=:answers%) OR " +
-		       "(a.student IS NULL OR a.student=:student) OR"+
-		       "(a.question IS NULL OR a.question=:question) OR"+
-		       "(a.choice IS NULL OR a.choice=:choice)" )
-	List<Answer> searchAnswers(@Param("answers") Boolean answers,@Param("student") Long student,@Param("question") Long question,@Param("choice") Long choice);
-	@Query("SELECT a FROM Answer a WHERE " +
-		       "(a.answers IS NULL OR a.answers=:answers%) OR " +
-		       "(a.student IS NULL OR a.student=:student) OR"+
-		       "(a.question IS NULL OR a.question=:question) OR"+
-		       "(a.choice IS NULL OR a.choice=:choice)" )
-	Page<Answer> searchStudents(@Param("search")String search, Pageable pageable);
+//	@Query("SELECT a FROM Answer a WHERE " +
+//		       "(a.answers IS NULL OR a.answers=:answers%) OR " +
+//		       "(a.student IS NULL OR a.student=:student) OR"+
+//		       "(a.question IS NULL OR a.question=:question) OR"+
+//		       "(a.choice IS NULL OR a.choice=:choice)" )
+//	List<Answer> searchAnswers(@Param("answers") Boolean answers,@Param("student") Long student,@Param("question") Long question,@Param("choice") Long choice);
+//	@Query("SELECT a FROM Answer a WHERE " +
+//		       "(a.answers IS NULL OR a.answers=:answers%) OR " +
+//		       "(a.student IS NULL OR a.student=:student) OR"+
+//		       "(a.question IS NULL OR a.question=:question) OR"+
+//		       "(a.choice IS NULL OR a.choice=:choice)" )
+//	Page<Answer> searchStudents(@Param("search")String search, Pageable pageable);
 }
