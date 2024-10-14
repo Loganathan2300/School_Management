@@ -34,7 +34,7 @@ public class SchoolController {
     }
 
     @GetMapping("/school/pagination")
-    public List<SchoolDto> getschoolPagination(PaginationDto paginationDto) {
+    public List<School> getschoolPagination(PaginationDto paginationDto) {
         return schoolService.getschoolPagination(paginationDto.getPage(), paginationDto.getSize());
     }
 

@@ -54,17 +54,22 @@ public class SchoolService {
 		 schoolRepository.deleteById(id);
 	    }
 	 
-	 public List<SchoolDto> getschoolPagination(int page, int size) {
+	 public List<School> getschoolPagination(int page, int size) {
 			Pageable pageable = PageRequest.of(page, size);
 	        Page<School> pagedSchool = schoolRepository.findAll(pageable);
 	        List<School> SchoolList = pagedSchool.getContent();
-	        List<SchoolDto> SchoolDTOs = new ArrayList<>();
+	        List<School> SchoolDTOs = new ArrayList<>();
 	        
 	        for(School school :SchoolList) {
-	        	SchoolDto schoolDTO = new SchoolDto();
-	        	schoolDTO.setName(school.getName());
-	        	schoolDTO.setAddress(school.getAddress());
-	        	SchoolDTOs.add(schoolDTO);
+//	        	SchoolDto schoolDTO = new SchoolDto();
+//	        	schoolDTO.setName(school.getName());
+//	        	schoolDTO.setAddress(school.getAddress());
+//	        	SchoolDTOs.add(schoolDTO);
+				School school1=new School();
+				school1.setId(school.getId());
+				school1.setName(school.getName());
+				school1.setAddress(school.getAddress());
+				SchoolDTOs.add(school1);
 	        }
 			return SchoolDTOs;
 		}

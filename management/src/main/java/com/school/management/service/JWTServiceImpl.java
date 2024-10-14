@@ -25,6 +25,7 @@ public class JWTServiceImpl {
         User user = (User) userDetails;
         String name = user.getName();
         String role = user.getRole();
+//        System.out.println(name);
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .claim("user_name", name)

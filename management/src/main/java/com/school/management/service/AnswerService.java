@@ -75,7 +75,6 @@ public class AnswerService {
 		        choiceDTO.setId(answer.getChoice().getId());
 		        choiceDTO.setContent(answer.getChoice().getContent());
 		        answerDTO.setChoice(choiceDTO);
-
 		        return answerDTO;
 		    }
 		  

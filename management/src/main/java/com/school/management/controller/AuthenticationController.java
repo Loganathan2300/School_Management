@@ -37,7 +37,7 @@ public class AuthenticationController {
         return authenticationService.adminSignUp(signUpRequest);
     }
 
-    @PostMapping("/superadmin-signup")
+    @PostMapping("/super-admin-signup")
     public User superAdminSignUp(@RequestBody SignUpRequest signUpRequest) {
         return authenticationService.superAdminSignUp(signUpRequest);
     }

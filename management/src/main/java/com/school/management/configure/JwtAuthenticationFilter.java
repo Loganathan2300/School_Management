@@ -2,6 +2,7 @@ package com.school.management.configure;
 
 import java.io.IOException;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -26,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private JWTServiceImpl jwtService;
 	@Autowired
     private UserServiceImpl  userService;
-	
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
@@ -35,25 +36,63 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        
-         String jwt = authHeader.substring(7);
-         String userEmail = jwtService.extractUserName(jwt);
+        try {
+            String jwt = authHeader.substring(7);
+            String userEmail = jwtService.extractUserName(jwt);
 
-        if(StringUtils.hasLength(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userService.loadUserByUsername(userEmail);
+            if(StringUtils.hasLength(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
+                UserDetails userDetails = userService.loadUserByUsername(userEmail);
+                if(jwtService.isTokenValid(jwt, userDetails)){
+                    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 
-            if(jwtService.isTokenValid(jwt, userDetails)){
-                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-                token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                securityContext.setAuthentication(token);
-                SecurityContextHolder.setContext(securityContext);
-            }
+                    securityContext.setAuthentication(token);
+                    SecurityContextHolder.setContext(securityContext);
+                }
+            }        } catch (ExpiredJwtException e) {
+            // Handle expired JWT here
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT Token has expired");
+            return;  // Stop further processing
         }
+
+//        if(StringUtils.hasLength(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
+//            UserDetails userDetails = userService.loadUserByUsername(userEmail);
+//
+//            if(jwtService.isTokenValid(jwt, userDetails)){
+//                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+//
+//                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+//                        userDetails, null, userDetails.getAuthorities()
+//                );
+//                token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//
+//                securityContext.setAuthentication(token);
+//                SecurityContextHolder.setContext(securityContext);
+//            }
+//        }
         filterChain.doFilter(request, response);
     }
 }
+
+
+//try {
+//String jwt = authHeader.substring(7);
+//String userEmail = jwtService.extractUserName(jwt);
+//
+//    if(StringUtils.hasLength(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
+//UserDetails userDetails = userService.loadUserByUsername(userEmail);
+//        if(jwtService.isTokenValid(jwt, userDetails)){
+//        // Proceed with setting the authentication context
+//        }
+//        }
+//        } catch (ExpiredJwtException e) {
+//        // Handle expired JWT here
+//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//    response.getWriter().write("JWT Token has expired");
+//    return;  // Stop further processing
+//            }
